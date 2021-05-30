@@ -1,1 +1,1 @@
-# iWatch
+# iWatch is a STC MCU project
