@@ -1,0 +1,11 @@
+"..\Objects\oled.obj",
+"..\Objects\PowerManage.obj",
+"..\Objects\IIC.obj",
+"..\Objects\Sys.obj",
+"..\Objects\EEPROM.obj",
+"..\Objects\Buzzer.obj",
+"..\Objects\Delay.obj",
+"..\Objects\Display.obj",
+"..\Objects\main.obj" 
+TO "..\Objects\iWatch-v1.1" 
+PRINT("..\Listings\iWatch-v1.m51") RAMSIZE(256) 

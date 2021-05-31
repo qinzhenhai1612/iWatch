@@ -1,0 +1,84 @@
+C51 COMPILER V9.52.0.0   MAIN                                                              05/30/2021 20:33:39 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN ..\Objects\main.obj
+COMPILER INVOKED BY: E:\install_files\keil\C51\BIN\C51.EXE ..\User\main.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(..\User\
+                    -System;..\User\Sensor;..\User\Rtc;..\User\Radio;..\User\Oled;..\User\Bluetooth;..\User) DEBUG OBJECTEXTEND PRINT(..\List
+                    -ings\main.lst) TABS(2) OBJECT(..\Objects\main.obj)
+
+line level    source
+
+   1          #include "Sys.h"
+   2          #include "bmp.h"
+   3          #include "intrins.h"
+   4          #include "stdio.h"
+   5          #include "stdlib.h"
+   6          #include "string.h"
+   7          #include "math.h"
+   8          #include "Delay.h"
+   9          #include "PowerManage.h"
+  10          #include "Buzzer.h"
+  11          #include "Display.h"
+  12          #include "PW02.h"
+*** WARNING C318 IN LINE 12 OF ..\User\main.c: can't open file 'PW02.h'
+  13          #include "PCF8563.h"
+*** WARNING C318 IN LINE 13 OF ..\User\main.c: can't open file 'PCF8563.h'
+  14          #include "BME280.h"        
+*** WARNING C318 IN LINE 14 OF ..\User\main.c: can't open file 'BME280.h'
+  15          #include "HMC5883L.h"
+*** WARNING C318 IN LINE 15 OF ..\User\main.c: can't open file 'HMC5883L.h'
+  16          #include "RDA5807M.h"
+*** WARNING C318 IN LINE 16 OF ..\User\main.c: can't open file 'RDA5807M.h'
+  17          #include "LSM6DSM.h"
+*** WARNING C318 IN LINE 17 OF ..\User\main.c: can't open file 'LSM6DSM.h'
+  18          #include "Ellipsoid fitting.h"
+*** WARNING C318 IN LINE 18 OF ..\User\main.c: can't open file 'Ellipsoid fitting.h'
+  19          
+  20          /***********************状态机相关变量*********************/
+  21          enum function func_num = WATCH;    //功能号
+  22          char func_index;               //功能索引
+  23          bit ON_OPEN = 0;
+  24          bit ON_CLOSE = 0;
+  25          bit ON_RETURN = 0;
+  26          /********************************************************/
+  27          /************************时基信号************************/
+  28          bit tick_1ms = 0;             //1000Hz
+  29          bit tick_8ms = 0;             //125hz
+  30          bit tick_20ms = 0;            //50hz
+  31          
+  32          /*************************工作状态相关变量*******************************/
+  33          bit action = 0;             //动态标志位
+  34          bit active_flag =1;       //活动标志位
+  35          bit sleep_flag = 0;         //睡眠标志位
+  36          bit powerdown_flag = 0;     //掉电标志位
+  37          bit deep_powerdown_flag = 0;    //深度掉电标志位
+  38          unsigned int inactive_time =0;  //自动息屏的时间
+  39          unsigned int sleep_time = 0;    //自动待机时间
+  40          unsigned int autowake_cnt = 0;  //自动唤醒的次数
+  41          bit screen_on_flag = 1;     //屏幕状态标志位
+  42          
+  43          
+  44          
+  45          void main()
+  46          { 
+C51 COMPILER V9.52.0.0   MAIN                                                              05/30/2021 20:33:39 PAGE 2   
+
+  47   1        SysInit();
+  48   1      
+  49   1      }
+  50          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =      3    ----
+   CONSTANT SIZE    =   7954    ----
+   XDATA SIZE       =      8    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =     12    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  7 WARNING(S),  0 ERROR(S)

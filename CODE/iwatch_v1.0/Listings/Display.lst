@@ -1,0 +1,675 @@
+C51 COMPILER V9.52.0.0   DISPLAY                                                           05/30/2021 20:33:37 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE DISPLAY
+OBJECT MODULE PLACED IN ..\Objects\Display.obj
+COMPILER INVOKED BY: E:\install_files\keil\C51\BIN\C51.EXE ..\User\System\Display.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDI
+                    -R(..\User\System;..\User\Sensor;..\User\Rtc;..\User\Radio;..\User\Oled;..\User\Bluetooth;..\User) DEBUG OBJECTEXTEND PRI
+                    -NT(..\Listings\Display.lst) TABS(2) OBJECT(..\Objects\Display.obj)
+
+line level    source
+
+   1          #include "sys.h"
+   2          #include "oled.h"
+   3          #include "font.h"
+   4          #include "Display.h"
+   5          #include "math.h"
+   6          #include "stdio.h"
+   7          #include "string.h"
+   8          
+   9          
+  10          unsigned char xdata main_cache[1024] = {0}; //主显存
+  11          unsigned char xdata sub_cache1[1024] = {0}; //次显存1，用来保存时钟界面
+  12          unsigned char xdata sub_cache2[1024] = {0}; //次显存2
+  13          
+  14          /**  
+  15            * @brief  根据sys_config结构体的内容初始化显示
+  16            * @param  config：sys_config型结构体的指针
+  17            * @retval 无
+  18            */
+  19          void DisplayInit(struct sys_config *config)
+  20          {
+  21   1        OLED_Init();                                    //初始化OLED
+  22   1        ScreenSetBrightness(config->screen_brightness); //设定屏幕亮度
+  23   1        ScreenSetDirection(config->screen_direction);   //设定屏幕方向
+  24   1        ScreenSetInverse(config->screen_inverse);       //设定屏幕是否反色
+  25   1        ScreenOnOff(ON);                                //屏幕开显示
+  26   1      }
+  27          /**
+  28            * @brief  将BMP图片写入指定显存中的指定位置
+  29            * @param  x：横坐标，y：纵坐标，width：图片的宽度，height：图片的高度，
+  30            *         buf1：BMP图的指针，buf2：显存的指针
+  31            *         k：选择覆盖在显存上还是重叠在显存上
+  32            *           COVER 覆盖
+  33            *           BLEND 叠加
+  34            * @retval 无
+  35            */
+  36          void BMPToCache(unsigned char x, unsigned char y, unsigned char width, unsigned char height, unsigned char
+             - *buf1, unsigned char *buf2, unsigned char k)
+  37          {
+  38   1        unsigned char data i, j;
+  39   1        unsigned int data num1, num2, num3;
+  40   1        num1 = height / 8;
+  41   1        if(k == 0)        
+  42   1        {
+  43   2          for(i = 0; i < num1; i++)
+  44   2          {
+  45   3            num2 = (i + y) * 128 + x;
+  46   3            num3 = i * width;
+  47   3            for(j = 0; j < width; j++)
+  48   3              buf2[num2 + j] = buf1[num3 + j];
+  49   3          }
+  50   2        }
+  51   1        else
+  52   1        {
+C51 COMPILER V9.52.0.0   DISPLAY                                                           05/30/2021 20:33:37 PAGE 2   
+
+  53   2          for(i = 0; i < num1; i++)
+  54   2          {
+  55   3            num2 = (i + y) * 128 + x;
+  56   3            num3 = i * width;
+  57   3            for(j = 0; j < width; j++)
+  58   3              buf2[num2 + j] |= buf1[num3 + j];
+  59   3          }
+  60   2        }
+  61   1        for(i = 0; i < num1; i++)
+  62   1        {
+  63   2          num2 = (i + y) * 128 + x;
+  64   2          num3 = i * width;
+  65   2          for(j = 0; j < width; j++)
+  66   2            buf2[num2 + j] = buf1[num3 + j];
+  67   2        }
+  68   1      }
+  69          /**
+  70            * @brief  将指定显存清零
+  71            * @param  buf：显存的指针
+  72            * @retval 无
+  73            */
+  74          void ClearCache(unsigned char *buf)
+  75          {
+  76   1        unsigned int data i;
+  77   1        for(i = 0; i < 1024; i++)
+  78   1          buf[i] = 0x00;
+  79   1      }
+  80          /**
+  81            * @brief  将指定显存的指定区域清零
+  82            * @param  x：起始横坐标，y：起始纵坐标，width：区域的宽度，height：区域的高度，
+  83            *         buf1：显存的指针
+  84            * @retval 无
+  85            */
+  86          void ClearCacheArea(unsigned char x, unsigned char y, unsigned char width, unsigned char height, unsigned 
+             -char *buf1)
+  87          {
+  88   1        unsigned char data i, j;
+  89   1        unsigned int data num1, num2;
+  90   1        num1 = height / 8;
+  91   1        for(i = 0; i < num1; i++)
+  92   1        {
+  93   2          num2 = (i + y) * 128 + x;
+  94   2          for(j = 0; j < width; j++)
+  95   2          {
+  96   3            buf1[num2 + j] = 0x00;
+  97   3          }
+  98   2        }
+  99   1      }
+ 100          /**
+ 101            * @brief  将主显存保存到次显存1中
+ 102            * @param  无
+ 103            * @retval 无
+ 104            */
+ 105          void SaveScreen(void)
+ 106          {
+ 107   1        unsigned int data n;
+ 108   1        for(n = 0; n < 1024; n++)
+ 109   1          sub_cache1[n] = main_cache[n];
+ 110   1      }
+ 111          /**
+ 112            * @brief  将指定显存刷新到OLED屏幕上
+ 113            * @param  cache_buf：显存的指针
+C51 COMPILER V9.52.0.0   DISPLAY                                                           05/30/2021 20:33:37 PAGE 3   
+
+ 114            * @retval 无
+ 115            */
+ 116          void ScreenRefreshAll(unsigned char *cache_buf)
+ 117          {
+ 118   1        OLED_DrawBMP(cache_buf);
+ 119   1      }
+ 120          /**
+ 121            * @brief  将主显存指定位置、指定宽度和指定长度的内容刷新到OLED屏幕上（局部刷新）
+ 122            * @param  x：起始横坐标（0~127），y：起始纵坐标（0~7）
+ 123            *         width：刷新区域的宽度（0~127），height：刷新区域的高度（0~7）
+ 124            * @retval 无
+ 125            */
+ 126          void ScreenRefreshArea(unsigned char x, unsigned char y, unsigned char width, unsigned char height)
+ 127          {
+ 128   1        unsigned char data i,j;
+ 129   1        unsigned int data n;  
+ 130   1        for(i = y; i < height; i++)  
+ 131   1        {
+ 132   2          OLED_Set_Pos(x, i);
+ 133   2          n = i * 128;
+ 134   2          for(j = 0; j < width; j++)
+ 135   2            OLED_WR_Byte(main_cache[n + j], OLED_DATA); 
+ 136   2        }
+ 137   1      }
+ 138          /**
+ 139            * @brief  实现当前屏幕内容滑动离开主屏显示，次显存的内容紧接进入主屏显示的动态效果
+ 140            * @param  cache：次显存的指针（显存的大小：1024bytes）
+ 141            *         direction：进入屏幕的方向
+ 142            *             UP    向上
+ 143            *             DOWN  向下
+ 144            *             LEFT  向左
+ 145            *             RIGHT 向右
+ 146            * @retval 无
+ 147            */
+ 148          void ScreenPushAnimation(unsigned char *cache, unsigned char direction)
+ 149          {
+ 150   1        unsigned char data n, i;  //循环变量
+ 151   1        unsigned int data j;      //循环变量
+ 152   1        unsigned int data num1, num2;
+ 153   1        if(direction == UP)
+ 154   1        {
+ 155   2          for(n = 0; n < 32; n++)
+ 156   2          {
+ 157   3            for(i = 0;i < 7;i++)
+ 158   3            {
+ 159   4              num1 = i*128;
+ 160   4              num2 = num1 + 128;
+ 161   4              for(j = num1; j < num2; j++)
+ 162   4              {
+ 163   5                main_cache[j] = (main_cache[j + 128] << 6) | (main_cache[j] >> 2);
+ 164   5              }
+ 165   4            }
+ 166   3            num1 = (n / 4) * 128;
+ 167   3            num2 = 6 - (n % 4) * 2;
+ 168   3            for(i = 0;i < 128; i++)
+ 169   3            {
+ 170   4              main_cache[896 + i] = (main_cache[896 + i] >> 2) | ((cache[num1 + i] << num2) & 0xc0);
+ 171   4            }
+ 172   3            OLED_DrawBMP(main_cache);   //将主显存写入OLED显示
+ 173   3          }
+ 174   2        }
+ 175   1        else if(direction == DOWN)
+C51 COMPILER V9.52.0.0   DISPLAY                                                           05/30/2021 20:33:37 PAGE 4   
+
+ 176   1        {
+ 177   2          for(n = 0; n < 32; n++)
+ 178   2          {
+ 179   3            for(i = 0; i < 7; i++)
+ 180   3            {
+ 181   4              num1 = (7 - i)*128;
+ 182   4              num2 = num1 + 128;
+ 183   4              for(j = num1; j < num2; j++)
+ 184   4                main_cache[j] = (main_cache[j] << 2) | (main_cache[j - 128] >> 6 );
+ 185   4            }
+ 186   3            num1 =(7 - (n/4))*128;
+ 187   3            num2 = 6 - (n%4)*2;
+ 188   3            for(i = 0;i < 128; i++)
+ 189   3              main_cache[i] = (main_cache[i] << 2) | ((cache[num1 + i] >> num2)&0x03);
+ 190   3            OLED_DrawBMP(main_cache); //将主显存写入OLED显示
+ 191   3          }
+ 192   2        }
+ 193   1        else if(direction == LEFT)
+ 194   1        {
+ 195   2          for(n = 0; n < 64; n++)
+ 196   2          {
+ 197   3            for(i = 0; i < 8; i++)
+ 198   3            {
+ 199   4              num1 = i * 128;
+ 200   4              num2 = num1 + 126;
+ 201   4              for(j = num1; j < num2; j++)
+ 202   4                main_cache[j] = main_cache[j + 2];
+ 203   4              main_cache[num2] = cache[num1 + n * 2];
+ 204   4              main_cache[num2 + 1] = cache[num1 + 1+ n * 2];
+ 205   4            }
+ 206   3            OLED_DrawBMP(main_cache);   //将主显存写入OLED显示
+ 207   3          }
+ 208   2        }
+ 209   1        else if(direction == RIGHT)
+ 210   1        {
+ 211   2          for(n = 0; n < 64; n++)
+ 212   2          {
+ 213   3            for(i = 0; i < 8; i++)
+ 214   3            {
+ 215   4              num1 = i * 128;
+ 216   4              num2 = num1 + 127;
+ 217   4              for(j = num2; j > num1; j--)
+ 218   4                main_cache[j] = main_cache[j - 2];
+ 219   4              main_cache[num1 + 1] = cache[num1 + 127 - n * 2];
+ 220   4              main_cache[num1] = cache[num1 + 126 - n * 2];
+ 221   4            }
+ 222   3            OLED_DrawBMP(main_cache);   //将主显存写入OLED显示
+ 223   3          }
+ 224   2        }
+ 225   1      }/**
+ 226            * @brief  实现当前屏幕内容向下滑动离开主屏显示，次显存的内容紧接进入主屏显示的动态效果
+ 227            * @param  cache：次显存的指针
+ 228            *         num：向下滑动的行数
+ 229            * @retval 无
+ 230            */
+ 231          void ScreeRollDown(unsigned char *buf2, unsigned char num)
+ 232          {
+ 233   1        unsigned char data n, i;
+ 234   1        unsigned int data j, num1, num2;
+ 235   1        for(n = 0; n < num; n++)
+ 236   1        {
+ 237   2          for(i = 0; i < 7; i++)
+C51 COMPILER V9.52.0.0   DISPLAY                                                           05/30/2021 20:33:37 PAGE 5   
+
+ 238   2          {
+ 239   3            num1 = (7 - i)*128;
+ 240   3            num2 = num1 + 128;
+ 241   3            for(j = num1; j < num2; j++)
+ 242   3              main_cache[j] = (main_cache[j] << 1) | (main_cache[j - 128] >> 7);
+ 243   3          }
+ 244   2          num1 =(7 - (n / 8)) * 128;
+ 245   2          num2 = 7 - (n % 8);
+ 246   2          for(i = 0;i < 128; i++)
+ 247   2            main_cache[i] = (main_cache[i] << 1) | ((buf2[num1 + i] >> num2)&0x01);
+ 248   2          OLED_DrawBMP(main_cache);
+ 249   2        }
+ 250   1      }
+ 251          /**
+ 252            * @brief  开启和关闭屏幕显示
+ 253            * @param  k：ON   开启
+ 254            *            OFF  关闭
+ 255            * @retval 无
+ 256            */
+ 257          void ScreenOnOff(unsigned char k)
+ 258          {
+ 259   1        if(k)
+ 260   1          OLED_Display_On();
+ 261   1        else
+ 262   1          OLED_Display_Off();
+ 263   1      }
+ 264          
+ 265          /**
+ 266            * @brief  设置屏幕的亮度
+ 267            * @param  screen_brightness：屏幕的亮度值（0~255）
+ 268            * @retval 无
+ 269            */
+ 270          void ScreenSetBrightness(unsigned char screen_brightness)
+ 271          {
+ 272   1        if(screen_brightness > 255) //限幅
+ 273   1          screen_brightness = 255;
+ 274   1        OLED_Set_Brightness(screen_brightness);
+ 275   1      }
+ 276          /**
+ 277            * @brief  设置屏幕方向
+ 278            * @param  direction：
+ 279            *           NORMAL      正常方向
+ 280            *           UPSIDEDOWN  上下左右颠倒
+ 281            * @retval 无
+ 282            */
+ 283          void ScreenSetDirection(unsigned char k)
+ 284          {
+ 285   1        if(k)
+ 286   1        {
+ 287   2          OLED_Horizental_Reverse(1);
+ 288   2          OLED_Vertical_Reverse(1);
+ 289   2        }
+ 290   1        else
+ 291   1        {
+ 292   2          OLED_Horizental_Reverse(0);
+ 293   2          OLED_Vertical_Reverse(0);
+ 294   2        }
+ 295   1      }
+ 296          
+ 297          /**
+ 298            * @brief  设置屏幕是否反色
+ 299            * @param  inverse：
+C51 COMPILER V9.52.0.0   DISPLAY                                                           05/30/2021 20:33:37 PAGE 6   
+
+ 300            *           NO_INVERSED 不反色，黑底白字
+ 301            *           INVERSED    反色，白底黑字
+ 302            * @retval 无
+ 303            */
+ 304          void ScreenSetInverse(unsigned char k)
+ 305          {
+ 306   1        OLED_Inverse(k);
+ 307   1      }
+ 308          /**
+ 309            * @brief  在主显存上显示时间，并实现时间变动时的动态效果
+ 310            *         当这次传入参数和上次调用该函数的参数不同时，不同的那位数字会动态切换
+ 311            *         其他相同的位数字不任何处理
+ 312            * @param  hour：小时，min：分钟，sec：秒钟
+ 313            * @retval 无
+ 314            */
+ 315          void DisplayTime(unsigned char hour, unsigned char min, unsigned char sec)
+ 316          {
+ 317   1        char n; 
+ 318   1        unsigned char i, j, num3;
+ 319   1        unsigned int k, num1, num2;
+ 320   1        unsigned int temp;
+ 321   1        unsigned char buf[8];
+ 322   1        static unsigned char last_buf[8] = {11,11,11,11,11,11,11,11};
+ 323   1        buf[0] = hour / 10;
+ 324   1        buf[1] = hour % 10;
+ 325   1        buf[2] = 10;
+ 326   1        buf[3] = min / 10;
+ 327   1        buf[4] = min % 10;
+ 328   1        buf[5] = 10;
+ 329   1        buf[6] = sec / 10;
+ 330   1        buf[7] = sec % 10;
+ 331   1        for(n = 7; n  >= 0; n--)
+ 332   1        {
+ 333   2          if(buf[n] != last_buf[n])
+ 334   2          {
+ 335   3            //last_buf[n] = buf[n];
+ 336   3            for(i = 0; i < 48; i++)
+ 337   3            {
+ 338   4              for(j = 0; j < 5; j ++)
+ 339   4              {
+ 340   5                num1 = (j + 1) * 128 + n * 16;
+ 341   5                num2 = num1 + 16;
+ 342   5                for(k = num1; k < num2; k++)
+ 343   5                {
+ 344   6                  temp = (main_cache[k + 128] << 8) | main_cache[k];
+ 345   6                  main_cache[k] = (temp >> 1);
+ 346   6                }
+ 347   5              }
+ 348   4              num1 = (j + 1) * 128 + n * 16;
+ 349   4              num2 = (i / 8) * 16;
+ 350   4              num3 = 7 - i % 8;
+ 351   4              for(k = 0; k < 16; k++) 
+ 352   4              {
+ 353   5                main_cache[k + num1] =  (main_cache[k + num1] >> 1) | ((F16X48[buf[n]][num2 + k] << num3) & 0x80);
+ 354   5              }
+ 355   4              OLED_DrawBMP(main_cache);
+ 356   4            }
+ 357   3          }
+ 358   2          last_buf[n] = buf[n];
+ 359   2        }
+ 360   1      }
+ 361          /**
+C51 COMPILER V9.52.0.0   DISPLAY                                                           05/30/2021 20:33:37 PAGE 7   
+
+ 362            * @brief  在指定显存的指定位置上显示字符串，并能够自动换行
+ 363            *         当达到屏幕底部时，整屏向上滚动以继续显示
+ 364            * @param  x：字符串起始位置的横坐标（0~127）
+ 365            *         y：字符串起始位置的纵坐标（0~7）
+ 366            *         str：待显示的字符串的指针
+ 367            *         cache_buf：显存的指针
+ 368            *         front_size；选择字体，  FONT8X16    大号字体
+ 369            *                                 FONT6X8     小号字体
+ 370            *         inverse：   是否反色，  NO_INVERSED 不反色
+ 371            *                                 INVERSED    反色
+ 372            *         do_refresh：是刷新屏幕，0           不刷新
+ 373            *                                 1           刷新
+ 374            * @retval 当前字符串所占的行数
+ 375            */
+ 376          unsigned char ShowString(unsigned char x, unsigned char y, unsigned char *str, unsigned char *cache_buf, u
+             -nsigned char front_size, unsigned char inverse, unsigned char do_refresh)
+ 377          {
+ 378   1        unsigned char data temp = 0x00;
+ 379   1        unsigned char data str_len = 0;
+ 380   1        unsigned char data n,i,j;
+ 381   1        unsigned char data line;
+ 382   1        unsigned int data num1, num2;
+ 383   1        if(inverse == INVERSED)
+ 384   1          temp = 0xff;
+ 385   1        while(str[str_len] != '\0')
+ 386   1        {
+ 387   2          str_len ++;
+ 388   2        }
+ 389   1        if(front_size == FONT8X16)
+ 390   1        {
+ 391   2          for(n = 0; n < str_len; n++)
+ 392   2          {
+ 393   3            line = y + (n / 16) * 2;
+ 394   3            if(line > 6)
+ 395   3            {
+ 396   4              for(i = 0; i < 2; i++)
+ 397   4              {
+ 398   5                num1 = i * 128 + x + (n % 16) * 8;
+ 399   5                num2 = i * 8;
+ 400   5                for(j = 0; j < 8; j++)
+ 401   5                  sub_cache2[num1 + j] = temp ^ F8X16[str[n] - ' '][num2 + j];
+ 402   5              }
+ 403   4              if(n % 16 == 15 || n == str_len - 1)
+ 404   4              {
+ 405   5                ScreeRollUp(sub_cache2, 16);
+ 406   5                ClearCache(sub_cache2);
+ 407   5              }
+ 408   4            }
+ 409   3            else
+ 410   3            {
+ 411   4              for(i = 0; i < 2; i++)
+ 412   4              {
+ 413   5                num1 = (line + i) * 128 + x + (n % 16) * 8;
+ 414   5                num2 = i * 8;
+ 415   5                for(j = 0; j < 8; j++)
+ 416   5                  cache_buf[num1 + j] = temp ^ F8X16[str[n] - ' '][num2 + j];
+ 417   5              }
+ 418   4            }
+ 419   3          }
+ 420   2        }
+ 421   1        else
+ 422   1        {
+C51 COMPILER V9.52.0.0   DISPLAY                                                           05/30/2021 20:33:37 PAGE 8   
+
+ 423   2          for(n = 0; n <str_len; n++)
+ 424   2          {
+ 425   3            line = y + (n / 21);
+ 426   3            if(line > 7)
+ 427   3            {
+ 428   4              num1 = x + (n % 21) * 6;
+ 429   4              for(j = 0; j < 6; j++)
+ 430   4                sub_cache2[num1 + j] = temp ^ F6X8[str[n] - ' '][j];
+ 431   4              if(n % 21 == 20 || n == str_len - 1)
+ 432   4              {
+ 433   5                ScreeRollUp(sub_cache2, 8);
+ 434   5                ClearCache(sub_cache2);
+ 435   5              }
+ 436   4            }
+ 437   3            else
+ 438   3            {
+ 439   4              num1 = line * 128 + x + (n % 21) * 6;
+ 440   4              for(j = 0; j < 6; j++)
+ 441   4                cache_buf[num1 + j] = temp ^ F6X8[str[n] - ' '][j];
+ 442   4            }
+ 443   3          }
+ 444   2        }
+ 445   1        if(do_refresh)
+ 446   1          ScreenRefreshArea(0, 0, 128, 8);
+ 447   1        if(front_size == FONT8X16)
+ 448   1          return (str_len / 16 + 1) * 2;
+ 449   1        else
+ 450   1          return (str_len / 21 + 1);
+ 451   1      }
+ 452          void DrawDot(unsigned char x, unsigned char y)
+ 453          {
+ 454   1        main_cache[(y / 8) * 128 + x] |= (0x01 << (y % 8));
+ 455   1      }
+ 456          void DrawLine(unsigned char x1, unsigned char y1, unsigned char x2, unsigned char y2)
+ 457          {
+ 458   1        float k;
+ 459   1        float b;
+ 460   1        if(x1 != x2)
+ 461   1        {
+ 462   2          k = ((float)y2 - (float)y1) / ((float)x2 - (float)x1);
+ 463   2          b = y1 - k * x1;
+ 464   2          if(k < 1 && k > -1)
+ 465   2          {
+ 466   3            if(x1 <= x2)
+ 467   3            {
+ 468   4              for(x1; x1 <= x2; x1++)
+ 469   4                DrawDot(x1, k * x1 + b);
+ 470   4            }
+ 471   3            else
+ 472   3            {
+ 473   4              for(x2; x2 <= x1; x2++)
+ 474   4                DrawDot(x2, k * x2 + b);
+ 475   4            }
+ 476   3          }
+ 477   2          else
+ 478   2          {
+ 479   3            if(y1 <= y2)
+ 480   3            {
+ 481   4              for(y1; y1 <= y2; y1++)
+ 482   4                DrawDot((y1 - b) / k, y1);
+ 483   4            }
+ 484   3            else
+C51 COMPILER V9.52.0.0   DISPLAY                                                           05/30/2021 20:33:37 PAGE 9   
+
+ 485   3            {
+ 486   4              for(y2; y2 <= y1; y2++)
+ 487   4                DrawDot((y2 - b) / k, y2);
+ 488   4            }
+ 489   3          }
+ 490   2        }
+ 491   1        else
+ 492   1        {
+ 493   2          if(y1 <= y2)
+ 494   2          {
+ 495   3            for(y1; y1 <= y2; y1++)
+ 496   3              DrawDot(x1, y1);
+ 497   3          }
+ 498   2          else
+ 499   2          {
+ 500   3            for(y2; y2 <= y1; y2++)
+ 501   3              DrawDot(x2, y2);
+ 502   3          }
+ 503   2        }
+ 504   1      }
+ 505          /*
+ 506          void DrawCircle(unsigned char x, unsigned char y, unsigned char radius)
+ 507          {
+ 508            float x0, y0, k, rad;
+ 509            for(rad = 0; rad <= 6.28; rad += 0.02)
+ 510            {
+ 511              k = tan(rad);
+ 512              if((rad >= 0) && (rad < 1.57))
+ 513                x0 = (float)radius / sqrt(k * k + 1);
+ 514              else if(rad < 3.14)
+ 515                x0 = - (float)radius / sqrt(k * k + 1);
+ 516              else if(rad < 4.71)
+ 517                x0 = - (float)radius / sqrt(k * k + 1);
+ 518              else
+ 519                x0 = (float)radius / sqrt(k * k + 1);
+ 520              y0 = x0 * k;
+ 521              DrawDot((x + x0), (y + y0));
+ 522            }
+ 523          }
+ 524          */
+ 525          void DrawArm(unsigned char x, unsigned char y, unsigned char radius, int angle)
+ 526          {
+ 527   1        float k, rad, x0, y0;
+ 528   1        rad = angle * 0.0174;
+ 529   1        k = tan(rad);
+ 530   1        if((rad >= 0) && (rad < 1.57))
+ 531   1          x0 = (float)radius / sqrt(k * k + 1);
+ 532   1        else if(rad < 3.14)
+ 533   1          x0 = - (float)radius / sqrt(k * k + 1);
+ 534   1        else if(rad < 4.71)
+ 535   1          x0 = - (float)radius / sqrt(k * k + 1);
+ 536   1        else
+ 537   1          x0 = (float)radius / sqrt(k * k + 1);
+ 538   1        y0 = x0 * k;
+ 539   1        DrawLine(x, y, x+x0, y+y0);
+ 540   1      }
+ 541          void DrawSelectionFrame(unsigned char x, unsigned char y)
+ 542          {
+ 543   1        DrawDot(x, y);
+ 544   1        DrawDot(x + 1, y);
+ 545   1        DrawDot(x + 2, y);
+ 546   1        DrawDot(x + 3, y);
+C51 COMPILER V9.52.0.0   DISPLAY                                                           05/30/2021 20:33:37 PAGE 10  
+
+ 547   1        DrawDot(x + 4, y);
+ 548   1        DrawDot(x + 1, y + 1);
+ 549   1        DrawDot(x + 2, y + 1);
+ 550   1        DrawDot(x + 3, y + 1);
+ 551   1        DrawDot(x + 4, y + 1);
+ 552   1        DrawDot(x, y + 1);
+ 553   1        DrawDot(x, y + 2);
+ 554   1        DrawDot(x, y + 3);
+ 555   1        DrawDot(x, y + 4);
+ 556   1        DrawDot(x + 1, y + 1);
+ 557   1        DrawDot(x + 1, y + 2);
+ 558   1        DrawDot(x + 1, y + 3);
+ 559   1        DrawDot(x + 1, y + 4);
+ 560   1                
+ 561   1        x += 31;
+ 562   1        DrawDot(x, y);
+ 563   1        DrawDot(x - 1, y);
+ 564   1        DrawDot(x - 2, y);
+ 565   1        DrawDot(x - 3, y);
+ 566   1        DrawDot(x - 4, y);
+ 567   1        DrawDot(x - 1, y + 1);
+ 568   1        DrawDot(x - 2, y + 1);
+ 569   1        DrawDot(x - 3, y + 1);
+ 570   1        DrawDot(x - 4, y + 1);
+ 571   1        DrawDot(x, y + 1);
+ 572   1        DrawDot(x, y + 2);
+ 573   1        DrawDot(x, y + 3);
+ 574   1        DrawDot(x, y + 4);
+ 575   1        DrawDot(x - 1, y + 1);
+ 576   1        DrawDot(x - 1, y + 2);
+ 577   1        DrawDot(x - 1, y + 3);
+ 578   1        DrawDot(x - 1, y + 4);
+ 579   1                  
+ 580   1        y += 31;
+ 581   1        DrawDot(x, y);
+ 582   1        DrawDot(x - 1, y);
+ 583   1        DrawDot(x - 2, y);
+ 584   1        DrawDot(x - 3, y);
+ 585   1        DrawDot(x - 4, y);
+ 586   1        DrawDot(x - 1, y - 1);
+ 587   1        DrawDot(x - 2, y - 1);
+ 588   1        DrawDot(x - 3, y - 1);
+ 589   1        DrawDot(x - 4, y - 1);
+ 590   1        DrawDot(x, y - 1);
+ 591   1        DrawDot(x, y - 2);
+ 592   1        DrawDot(x, y - 3);
+ 593   1        DrawDot(x, y - 4);
+ 594   1        DrawDot(x - 1, y - 1);
+ 595   1        DrawDot(x - 1, y - 2);
+ 596   1        DrawDot(x - 1, y - 3);
+ 597   1        DrawDot(x - 1, y - 4);
+ 598   1                  
+ 599   1        x -= 31;
+ 600   1        DrawDot(x, y);
+ 601   1        DrawDot(x + 1, y);
+ 602   1        DrawDot(x + 2, y);
+ 603   1        DrawDot(x + 3, y);
+ 604   1        DrawDot(x + 4, y);
+ 605   1        DrawDot(x + 1, y - 1);
+ 606   1        DrawDot(x + 2, y - 1);
+ 607   1        DrawDot(x + 3, y - 1);
+ 608   1        DrawDot(x + 4, y - 1);
+C51 COMPILER V9.52.0.0   DISPLAY                                                           05/30/2021 20:33:37 PAGE 11  
+
+ 609   1        DrawDot(x, y - 1);
+ 610   1        DrawDot(x, y - 2);
+ 611   1        DrawDot(x, y - 3);
+ 612   1        DrawDot(x, y - 4);
+ 613   1        DrawDot(x + 1, y - 1);
+ 614   1        DrawDot(x + 1, y - 2);
+ 615   1        DrawDot(x + 1, y - 3);
+ 616   1        DrawDot(x + 1, y - 4);
+ 617   1      }
+ 618          
+ 619          
+ 620          
+ 621          
+ 622          
+ 623          
+ 624          
+ 625          
+ 626          
+ 627          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   5460    ----
+   CONSTANT SIZE    =   3146    ----
+   XDATA SIZE       =   3080      98
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----      48
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
