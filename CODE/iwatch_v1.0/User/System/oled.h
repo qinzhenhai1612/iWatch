@@ -39,11 +39,11 @@ sbit OLED_SDIN = P2^3;	//D1（MOSI） 数据
 #else
 
 #define OLED_DAT	P0
-sbit OLED_RST = P1^3;		//复位
-sbit OLED_DC =	P1^2;		//数据/命令控制
+sbit OLED_RST = P1^2;		//复位
+sbit OLED_DC =	P1^3;		//数据/命令控制
 sbit OLED_WR =	P4^3;
 sbit OLED_RD =	P4^4;
-//sbit OLED_CS=P2^0; //片选
+//sbit OLED_CS =  P1^2; //片选
 
 #define OLED_RST_Clr() OLED_RST=0
 #define OLED_RST_Set() OLED_RST=1
@@ -66,7 +66,7 @@ sbit OLED_RD =	P4^4;
 #define X_WIDTH 		128
 #define Y_WIDTH 		64	    						  
 //-----------------OLED端口定义---------------- 
-
+ 
 
 void delay_ms(unsigned int ms);
 //OLED控制用函数

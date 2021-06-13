@@ -7,18 +7,18 @@
 //#include "PCF8563.h"
 
 /*********************宏定义***********************/
-#define LED1 P20
-#define K1   P27
-#define k2   P37
+#define LED1 P35
+#define K1   P54
+#define K2   P23
 #define K3   P55
 #define KEY1         0x01
 #define KEY2         0x02
 #define KEY3   	  	 0x04
-#define KEY12   `  	 0x03
-#define KEY13     `	 0x05
-#define KEY23   ` 	 0x06
+#define KEY12     	 0x03
+#define KEY13     	 0x05
+#define KEY23    	   0x06
 #define DOUBLE_TAP   0x08
-#define AWT	   `	   0x09
+#define AWT	         0x09
 #define ON   1
 #define OFF  0
  
@@ -46,7 +46,7 @@ enum function{
 //设置信息的结构体
 struct sys_config{
 	unsigned char t_inactive_max;     //自动息屏时间
-	unsigned char t_sleep_mas;        //自动待机时间
+	unsigned char t_sleep_max;        //自动待机时间
 	unsigned char screen_brightness;  //屏幕亮度
 	unsigned char screen_inverse;     //屏幕是否反色
 	unsigned char screen_direction;   //屏幕的显示方向
@@ -68,7 +68,7 @@ struct sys_config{
 	unsigned char history_step[7][11];//计步器的历史数据，存放过去7天的步数
 	unsigned int check_sum;           //所有设置信息的求和结果，用于验证数据是否完整
 };
-#define  CONFIG_SIZE sizeof(struct sys_config)
+#define CONFIG_SIZE sizeof(struct sys_config)
 
 void PinInit(void);
 void MCUSoftReset(void);

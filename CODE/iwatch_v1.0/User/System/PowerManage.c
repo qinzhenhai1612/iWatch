@@ -123,7 +123,7 @@ float GetBatteryLife(void)
 	return percentage;
 }
 /**
-  * @brief  调用该函数使MCU进入掉电模式  不要轻易改动这个函数，否则会影响工号
+  * @brief  调用该函数使MCU进入掉电模式  不要轻易改动这个函数，否则会影响功耗
   * @param  无
   * @retval  无
 */

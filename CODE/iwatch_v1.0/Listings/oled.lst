@@ -1,4 +1,4 @@
-C51 COMPILER V9.52.0.0   OLED                                                              05/30/2021 20:33:29 PAGE 1   
+C51 COMPILER V9.52.0.0   OLED                                                              06/12/2021 21:34:21 PAGE 1   
 
 
 C51 COMPILER V9.52.0.0, COMPILATION OF MODULE OLED
@@ -62,7 +62,7 @@ line level    source
                 else
                   OLED_DC_Clr();
                 OLED_CS_Clr();
-C51 COMPILER V9.52.0.0   OLED                                                              05/30/2021 20:33:29 PAGE 2   
+C51 COMPILER V9.52.0.0   OLED                                                              06/12/2021 21:34:21 PAGE 2   
 
                 for(i=0;i<8;i++)
                 {
@@ -126,7 +126,7 @@ line level    source
  113          {
  114   1        if(k)
  115   1          OLED_WR_Byte(0xA7, OLED_CMD);
-C51 COMPILER V9.52.0.0   OLED                                                              05/30/2021 20:33:29 PAGE 3   
+C51 COMPILER V9.52.0.0   OLED                                                              06/12/2021 21:34:21 PAGE 3   
 
  116   1        else
  117   1          OLED_WR_Byte(0xA6, OLED_CMD);
@@ -190,7 +190,7 @@ line level    source
  175   1        OLED_WR_Byte(0x20,OLED_CMD);//-Set Page Addressing Mode (0x00/0x01/0x02)
  176   1        OLED_WR_Byte(0x02,OLED_CMD);//
  177   1        OLED_WR_Byte(0x8D,OLED_CMD);//--set Charge Pump enable/disable
-C51 COMPILER V9.52.0.0   OLED                                                              05/30/2021 20:33:29 PAGE 4   
+C51 COMPILER V9.52.0.0   OLED                                                              06/12/2021 21:34:21 PAGE 4   
 
  178   1        OLED_WR_Byte(0x14,OLED_CMD);//--set(0x10) disable
  179   1        OLED_WR_Byte(0xA4,OLED_CMD);// Disable Entire Display On (0xa4/0xa5)
