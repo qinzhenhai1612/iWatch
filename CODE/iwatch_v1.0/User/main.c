@@ -62,7 +62,7 @@ struct cal_data magnet_cal_data;  //磁力计叫做数据结构体
 float battery_life;					//电池电量
 unsigned int  timer_cnt = 0;//定时器0溢出次数
 
-/**********
+
 void KeyScan(void)
 {
 	unsigned char dat = 0x00;
@@ -214,7 +214,7 @@ void SensorInit(void)
 		}
 	}
 }
-*********/
+
 
 void main()
 {	
@@ -223,14 +223,14 @@ void main()
 	DisplayInit(&config);	//显示初始化     
 //	PCF8563Init();				//实时时钟初始化        
 //	SensorInit();					//传感器初始化
-//	ClearCache(main_cache);	//清空主显存
+	ClearCache(main_cache);	//清空主显存
 	while(1)
 	
-	{   
+	{
 		FeedWatchDog();			//喂看门狗
 		
 	
-  /******	
+  /********
 		if(func_num == WATCH)						//显示表盘
 		{
 			unsigned char x, n, m;
@@ -253,9 +253,9 @@ void main()
 			{
 				tick_20ms = 0;
 				//显示时间
-//				PCF8563ReadTime(&RTC);
+				PCF8563ReadTime(&RTC);
 				//printf("%d:%d:%d\n", (int)RTC.hour, (int)RTC.minute, (int)RTC.second);
-//				DisplayTime(RTC.hour, RTC.minute, RTC.second);
+				DisplayTime(RTC.hour, RTC.minute, RTC.second);
 				//显示小图标
 				ClearCacheArea(0, 0, 35, 8, main_cache);
 				x = 0;
@@ -275,8 +275,8 @@ void main()
 					BMPToCache(x, 0, 8, 8, RADIO_SMALL_ICON, main_cache, 0);
 				//显示日期，星期
 				ClearCacheArea(0, 7, 128, 8, main_cache);
-//				sprintf(str, "%d/%d/%d ", (int)RTC.year, (int)RTC.month, (int)RTC.day);
-//				strcat(str, WEEKDAY_IN_STR[RTC.weekday - 1]);
+				sprintf(str, "%d/%d/%d ", (int)RTC.year, (int)RTC.month, (int)RTC.day);
+				strcat(str, WEEKDAY_IN_STR[RTC.weekday - 1]);
 				ShowString(0, 7, str, main_cache, FONT6X8, NO_INVERSED, 0);
 				//显示电量
 				battery_life = GetBatteryLife();
@@ -289,6 +289,7 @@ void main()
 				sprintf(str, "%3d%%", (int)(battery_life * 100));
 				ShowString(78, 0, str, main_cache, FONT6X8, NO_INVERSED, 1);
 			}
+			
 			if(Trg != 0)		//在该功能下对按键事件的处理
 			{
 				switch(Trg)
@@ -436,7 +437,7 @@ void main()
 		}
 		else if(func_num == SUB_MENU)		//次菜单		ok
 		{
-			/*************************
+			
 			char x, y;
 			if(ON_OPEN)
 			{
@@ -608,7 +609,7 @@ void main()
 			if(ON_OPEN)
 			{
 				ON_OPEN = 0;
-				PCF8563ReadTime(&RTC);
+//				PCF8563ReadTime(&RTC);
 				ClearCache(sub_cache2);
 				ShowString(0, 0, "Today:    History:", sub_cache2, FONT6X8, NO_INVERSED, 0);
 				step = LSM6DSMGetCurrentStep();
@@ -2403,10 +2404,11 @@ void main()
 						deep_powerdown_flag = 1;
 					}
 				}
-			}
+			}    
 		}
+			
     }	
-   *********/	
+  ********************/           
 	}
 
 }
