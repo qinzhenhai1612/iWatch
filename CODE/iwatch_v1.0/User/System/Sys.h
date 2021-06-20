@@ -4,7 +4,7 @@
 
 #include "stc8a.h"
 #include "Display.h"
-//#include "PCF8563.h"
+#include "PCF8563.h"
 
 /*********************宏定义***********************/
 #define LED1 P35
@@ -32,6 +32,7 @@ enum function{
 	SUB_MENU,
 	STOPWATCH,
 	PEDOMETER,
+	THPMETER,
 	RADIO,
 	COMPASS,
 	BLUETOOTH,
@@ -60,11 +61,11 @@ struct sys_config{
 	float radio_channel;              //收音机频道
 	float cal_anglex;                 //x轴倾角偏移
 	float cal_angley;						      //y轴倾角偏移
-	int cal_maganet_x0;           	  //磁力计矫正系数
-	int cal_maganet_y0;          	    //磁力计矫正系数
-	int cal_maganet_z0;         	    //磁力计矫正系数
-	float cal_maganet_ab;             //磁力计矫正系数
-	float cal_maganet_ac;             //磁力计矫正系数
+	int cal_magnet_x0;          	  //磁力计矫正系数
+	int cal_magnet_y0;          	    //磁力计矫正系数
+	int cal_magnet_z0;         	    //磁力计矫正系数
+	float cal_magnet_ab;             //磁力计矫正系数
+	float cal_magnet_ac;             //磁力计矫正系数
 	unsigned char history_step[7][11];//计步器的历史数据，存放过去7天的步数
 	unsigned int check_sum;           //所有设置信息的求和结果，用于验证数据是否完整
 };

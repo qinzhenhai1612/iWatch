@@ -3,7 +3,7 @@
 
 
 void Delay1ms(unsigned int t);
-
+void Delay1us(unsigned int t);
 #endif
 
 

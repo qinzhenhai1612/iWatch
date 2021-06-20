@@ -1,6 +1,6 @@
 #include "intrins.h"
 
-void Delay1ms(unsigned int t)    //824.000MHZ
+void Delay1ms(unsigned int t)    //24.000MHZ  
 {
 	unsigned char i,j;
 	for(t; t > 0;t--)
@@ -13,6 +13,15 @@ void Delay1ms(unsigned int t)    //824.000MHZ
 			while(--j);
 		}	while(--i);
 		
+	}
+}
+void Delay1us(unsigned int t)		//@24.000MHz
+{
+	unsigned char i;
+	for(t; t>0; t--)
+	{
+		i = 6;
+		while (--i);
 	}
 }
 	

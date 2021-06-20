@@ -1,10 +1,10 @@
-C51 COMPILER V9.52.0.0   POWERMANAGE                                                       06/15/2021 23:47:19 PAGE 1   
+C51 COMPILER V9.52.0.0   POWERMANAGE                                                       06/21/2021 07:21:59 PAGE 1   
 
 
 C51 COMPILER V9.52.0.0, COMPILATION OF MODULE POWERMANAGE
 OBJECT MODULE PLACED IN ..\Objects\PowerManage.obj
 COMPILER INVOKED BY: E:\install_files\keil\C51\BIN\C51.EXE ..\User\System\PowerManage.c LARGE OPTIMIZE(8,SPEED) BROWSE I
-                    -NCDIR(..\User\System;..\User\Sensor;..\User\Rtc;..\User\Radio;..\User\Oled;..\User\Bluetooth;..\User) DEBUG OBJECTEXTEND
+                    -NCDIR(..\User\oled;..\User\rtc;..\User\System;..\User;..\User\bluetooth;..\User\radio;..\User\sensor) DEBUG OBJECTEXTEND
                     - PRINT(..\Listings\PowerManage.lst) TABS(2) OBJECT(..\Objects\PowerManage.obj)
 
 line level    source
@@ -62,7 +62,7 @@ line level    source
   51          */
   52          void BatteryChargeEnable(unsigned char k)
   53          {
-C51 COMPILER V9.52.0.0   POWERMANAGE                                                       06/15/2021 23:47:19 PAGE 2   
+C51 COMPILER V9.52.0.0   POWERMANAGE                                                       06/21/2021 07:21:59 PAGE 2   
 
   54   1        if(k)
   55   1        {
@@ -126,7 +126,7 @@ line level    source
  113   2          queue[i] = percentage;
  114   2        }
  115   1        for(i = WINDOW_WIDTH - 1; i > 0; i--)
-C51 COMPILER V9.52.0.0   POWERMANAGE                                                       06/15/2021 23:47:19 PAGE 3   
+C51 COMPILER V9.52.0.0   POWERMANAGE                                                       06/21/2021 07:21:59 PAGE 3   
 
  116   1        {
  117   2          queue[1] = queue[i-1];
@@ -190,7 +190,7 @@ line level    source
  175   1      }
  176          /**
  177            * @brief  调用该函数将系统从掉电模式或者深度掉电模式中恢复过来，不要轻易改动这个函数，否则影响功耗
-C51 COMPILER V9.52.0.0   POWERMANAGE                                                       06/15/2021 23:47:19 PAGE 4   
+C51 COMPILER V9.52.0.0   POWERMANAGE                                                       06/21/2021 07:21:59 PAGE 4   
 
  178            * @param  无
  179            * @retval  无

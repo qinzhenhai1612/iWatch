@@ -216,21 +216,84 @@ void SensorInit(void)
 }
 
 
+
+void  LED1_ON()
+{
+	P35 = 1;
+}  
+void  LED1_OFF()
+{
+  P35 = 0;
+}
+
+void BreathingLamp(void)
+{
+	unsigned int  i=0,  j=0,num=500;
+  for(i=0;i<num;i++)
+	  {
+			for(j=0;j<num;j++)
+			{
+				if(i>j)
+				{
+					LED1_ON();
+					Delay1us(1);
+				}
+				else
+				{
+					LED1_OFF();
+					Delay1us(1);
+				}	
+			}
+		}
+		Delay1us(1);
+		for(i=0;i<num;i++)
+	  {
+			for(j=0;j<num;j++)
+			{
+				if(i>j)
+				{
+					LED1_OFF();
+					Delay1us(1);
+				}
+			
+				else
+				{
+					LED1_ON();
+					Delay1us(1);
+					
+				}	
+			}
+		}
+}
+
 void main()
 {	
-	//LED(ON);
+	
+	
 	SysInit();						//系统初始化
 	DisplayInit(&config);	//显示初始化     
-//	PCF8563Init();				//实时时钟初始化        
-//	SensorInit();					//传感器初始化
+	PCF8563Init();				//实时时钟初始化        
+	SensorInit();					//传感器初始化
 	ClearCache(main_cache);	//清空主显存
+	
+	
 	while(1)
 	
 	{
 		FeedWatchDog();			//喂看门狗
+		BreathingLamp();
+ 
 		
+		
+
+            
+
+
+	 
+		
+
 	
-  /********
+ 
 		if(func_num == WATCH)						//显示表盘
 		{
 			unsigned char x, n, m;
@@ -2407,9 +2470,8 @@ void main()
 			}    
 		}
 			
-    }	
-  ********************/           
+    }	          
 	}
 
-}
+
 	
