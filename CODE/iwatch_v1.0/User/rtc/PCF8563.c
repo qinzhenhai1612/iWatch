@@ -230,9 +230,9 @@ void PCF8563EnableClockOuput(unsigned char clock_fq, unsigned char en)
 }
 void PCF8563Init(void)
 {
-	PCF8563ClearAlarmFlag();
-	PCF8563ClearTimerFlag();
-	PCF8563EnableTimer(TIMERCLK_1_60_HZ, 1);
+//	PCF8563ClearAlarmFlag();
+//	PCF8563ClearTimerFlag();
+//	PCF8563EnableTimer(TIMERCLK_1_60_HZ, 1);
 	//PCF8563DisableTimer();
 	PCF8563EnableClockOuput(CLKOUT_1024_HZ, DISABLE_CLKOUT);
 }

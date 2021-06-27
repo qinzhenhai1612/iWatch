@@ -276,12 +276,12 @@ void SysInit(void)
 	Timer0Init();  //定时器0初始化，外部计数模式
 	Timer3Init();  //定时器3初始化，产生1ms溢出中断
 	InitConfig(); //中断初始化
-	ADCInit();    //ADC初始化 ，采集电源电压
+	//ADCInit();    //ADC初始化 ，采集电源电压
 	IIC_Init();   //硬件IIC初始化
 	EnableWatchDog();   //使能看门狗，程序卡死4s后自动复位
 	EEPROMReadConfiguration(&config);//读掉电保存数据
-	BuzzerInit();  //蜂鸣器初始化，使用硬件PWM7
-	EnableBuzzer(config.key_sound);
+	//BuzzerInit();  //蜂鸣器初始化，使用硬件PWM7
+	//EnableBuzzer(config.key_sound);
 	LED(ON);
 	//BatteryChargeEnable(1);  //允许电池充电
 	Delay1ms(5);  

@@ -1,4 +1,4 @@
-C51 COMPILER V9.52.0.0   HMC5883L                                                          06/21/2021 07:21:58 PAGE 1   
+C51 COMPILER V9.52.0.0   HMC5883L                                                          06/27/2021 08:52:18 PAGE 1   
 
 
 C51 COMPILER V9.52.0.0, COMPILATION OF MODULE HMC5883L
@@ -62,7 +62,7 @@ line level    source
   51          /**
   52            * @brief  检查与HMC5883L的连接是否正常
   53            * @param  无
-C51 COMPILER V9.52.0.0   HMC5883L                                                          06/21/2021 07:21:58 PAGE 2   
+C51 COMPILER V9.52.0.0   HMC5883L                                                          06/27/2021 08:52:18 PAGE 2   
 
   54            * @retval 1（成功），0（失败）
   55            */
@@ -126,7 +126,7 @@ line level    source
  112            *         1：成功
  113            */
  114          unsigned char HMC5883L_Init(void)
-C51 COMPILER V9.52.0.0   HMC5883L                                                          06/21/2021 07:21:58 PAGE 3   
+C51 COMPILER V9.52.0.0   HMC5883L                                                          06/27/2021 08:52:18 PAGE 3   
 
  115          {
  116   1        unsigned char time_out = 200;

@@ -32,10 +32,10 @@
           <SFDFile></SFDFile>
           <bCustSvd>0</bCustSvd>
           <UseEnv>0</UseEnv>
-          <BinPath></BinPath>
+          <BinPath>E:\install_files\keil\C51\BIN\</BinPath>
           <IncludePath></IncludePath>
           <LibPath></LibPath>
-          <RegisterFilePath>STC\</RegisterFilePath>
+          <RegisterFilePath></RegisterFilePath>
           <DBRegisterFilePath>STC\</DBRegisterFilePath>
           <TargetStatus>
             <Error>0</Error>
@@ -309,7 +309,7 @@
               <MiscControls></MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath>..\User\System;..\User\Sensor;..\User\Rtc;..\User\Radio;..\User\Oled;..\User\Bluetooth;..\User</IncludePath>
+              <IncludePath>..\User\oled;..\User\rtc;..\User\System;..\User;..\User\bluetooth;..\User\radio;..\User\sensor</IncludePath>
             </VariousControls>
           </C51>
           <Ax51>
@@ -363,6 +363,13 @@
         </Group>
         <Group>
           <GroupName>Bluetooth</GroupName>
+          <Files>
+            <File>
+              <FileName>PW02.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\bluetooth\PW02.c</FilePath>
+            </File>
+          </Files>
         </Group>
         <Group>
           <GroupName>Oled</GroupName>
@@ -370,18 +377,54 @@
             <File>
               <FileName>oled.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\User\System\oled.c</FilePath>
+              <FilePath>..\User\oled\oled.c</FilePath>
             </File>
           </Files>
         </Group>
         <Group>
           <GroupName>Radio</GroupName>
+          <Files>
+            <File>
+              <FileName>RDA5807M.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\radio\RDA5807M.c</FilePath>
+            </File>
+          </Files>
         </Group>
         <Group>
           <GroupName>Rtc</GroupName>
+          <Files>
+            <File>
+              <FileName>PCF8563.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Rtc\PCF8563.c</FilePath>
+            </File>
+          </Files>
         </Group>
         <Group>
           <GroupName>Sensor</GroupName>
+          <Files>
+            <File>
+              <FileName>BME280.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\sensor\BME280.c</FilePath>
+            </File>
+            <File>
+              <FileName>Ellipsoid fitting.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\sensor\Ellipsoid fitting.c</FilePath>
+            </File>
+            <File>
+              <FileName>HMC5883L.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\sensor\HMC5883L.c</FilePath>
+            </File>
+            <File>
+              <FileName>LSM6DSM.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\sensor\LSM6DSM.c</FilePath>
+            </File>
+          </Files>
         </Group>
         <Group>
           <GroupName>System</GroupName>

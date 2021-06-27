@@ -16,6 +16,7 @@
 #include "RDA5807M.h"
 #include "LSM6DSM.h"
 #include "Ellipsoid fitting.h"
+#include "stc8a.h"
 
 
 
@@ -217,6 +218,9 @@ void SensorInit(void)
 
 
 
+
+
+
 void  LED1_ON()
 {
 	P35 = 1;
@@ -266,15 +270,33 @@ void BreathingLamp(void)
 		}
 }
 
+
 void main()
 {	
 	
 	
-	SysInit();						//系统初始化
-	DisplayInit(&config);	//显示初始化     
-	PCF8563Init();				//实时时钟初始化        
-	SensorInit();					//传感器初始化
-	ClearCache(main_cache);	//清空主显存
+//	SysInit();						//系统初始化
+//	DisplayInit(&config);	//显示初始化     
+//	PCF8563Init();				//实时时钟初始化        
+//	SensorInit();					//传感器初始化
+//	ClearCache(main_cache);	//清空主显存
+	
+	//可以控制显示屏的相关控制信号，猜测是灯板的问题，待灯板回来后再重新贴装一个，测试
+	
+//  OLED_RST_Set();
+//	OLED_RD_Set();
+//	OLED_WR_Set();
+//	OLED_DC_Set();
+//	P1 = 0x0c;
+//	P4 = 0x18;
+	
+//	OLED_RST_Clr();
+//	OLED_WR_Clr();
+//	OLED_RD_Clr();                              
+//	OLED_DC_Clr();
+	P1 = 0x00;
+	P4 = 0x00;
+	
 	
 	
 	while(1)
@@ -283,16 +305,7 @@ void main()
 		FeedWatchDog();			//喂看门狗
 		BreathingLamp();
  
-		
-		
-
-            
-
-
-	 
-		
-
-	
+/*******
  
 		if(func_num == WATCH)						//显示表盘
 		{
@@ -2381,7 +2394,7 @@ void main()
 				ScreenOnOff(OFF);
 				screen_on_flag = 0;
 			}
-		}
+		}   
 		if(powerdown_flag)		
 		{
 			if(ON_CLOSE == 0)
@@ -2419,7 +2432,7 @@ void main()
 				alarm_flag = 1;		//置位闹钟标志位
 				Beebeebee();			//响铃
 				Delay1ms(5);
-				if(config.alarm_mode == ALARM_WORKDAY)
+				if(config.alarm_mode == ALARM_WORKDAY) 
 				{
 					if(RTC.weekday + 1 > 5)
 						config.alarm_weekday = 1;
@@ -2438,9 +2451,9 @@ void main()
 			{
 				PCF8563ClearTimerFlag();	//清除定时器中断标志位
 				//PCF8563以固定的时间间隔唤醒MCU
-				//唤醒之后执行以下内容
+				//唤醒之后执行以下内容  
 				battery_life = GetBatteryLife();
-				if(active_flag || sleep_flag || powerdown_flag)
+				if(active_flag || sleep_flag || powerdown_flag)      
 				{
 					if((RTC.hour == 22) && (RTC.minute == 4))		//22:04,记录当天的步数数据
 					{
@@ -2469,9 +2482,10 @@ void main()
 				}
 			}    
 		}
-			
-    }	          
-	}
+		*****/    	
+  }	          
+	
+}
 
 
 	
