@@ -1,4 +1,4 @@
-#include "sys.h"
+#include "Sys.h"
 #include "oled.h"
 #include "font.h"
 #include "Display.h"
@@ -6,12 +6,11 @@
 #include "stdio.h"
 #include "string.h"
 
-
 unsigned char xdata main_cache[1024] = {0};	//主显存
 unsigned char xdata sub_cache1[1024] = {0};	//次显存1，用来保存时钟界面
 unsigned char xdata sub_cache2[1024] = {0};	//次显存2
 
-/**  
+/**
 	* @brief 	根据sys_config结构体的内容初始化显示
 	* @param  config：sys_config型结构体的指针
 	* @retval 无
@@ -222,7 +221,38 @@ void ScreenPushAnimation(unsigned char *cache, unsigned char direction)
 			OLED_DrawBMP(main_cache);		//将主显存写入OLED显示
 		}
 	}
-}/**
+}
+/**
+	* @brief  实现当前屏幕内容向上滑动离开主屏显示，次显存的内容紧接进入主屏显示的动态效果
+	* @param  cache：次显存的指针
+	*					num：向上滑动的行数
+	* @retval 无
+	*/
+void ScreeRollUp(unsigned char *buf2, unsigned char num)
+{
+	unsigned char data n, i;
+	unsigned int data j, num1, num2;
+	for(n = 0; n < num; n++)
+	{
+		for(i = 0;i < 7;i++)
+		{
+			num1 = i*128;
+			num2 = num1 + 128;
+			for(j = num1; j < num2; j++)
+			{
+				main_cache[j] = (main_cache[j + 128] << 7) | (main_cache[j] >> 1);
+			}
+		}
+		num1 = (n / 8) * 128;
+		num2 = 7 - (n % 8);
+		for(i = 0;i < 128; i++)
+		{
+			main_cache[896 + i] = (main_cache[896 + i] >> 1) | ((buf2[num1 + i] << num2)&0x80);
+		}
+		OLED_DrawBMP(main_cache);
+	}
+}
+/**
 	* @brief  实现当前屏幕内容向下滑动离开主屏显示，次显存的内容紧接进入主屏显示的动态效果
 	* @param  cache：次显存的指针
 	*					num：向下滑动的行数
@@ -261,7 +291,6 @@ void ScreenOnOff(unsigned char k)
 	else
 		OLED_Display_Off();
 }
-
 /**
 	* @brief 	设置屏幕的亮度
 	* @param  screen_brightness：屏幕的亮度值（0~255）
@@ -293,7 +322,6 @@ void ScreenSetDirection(unsigned char k)
 		OLED_Vertical_Reverse(0);
 	}
 }
-
 /**
 	* @brief 	设置屏幕是否反色
 	* @param  inverse：
@@ -615,13 +643,3 @@ void DrawSelectionFrame(unsigned char x, unsigned char y)
 	DrawDot(x + 1, y - 3);
 	DrawDot(x + 1, y - 4);
 }
-
-
-
-
-
-
-
-
-
-

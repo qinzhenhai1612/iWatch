@@ -1,99 +1,98 @@
 #include "oled.h"
 
-//OLED的显存，存放格式如下
-//[0]0 1 2 3 ... 127
-//[1]0 1 2 3 ... 127
-//[2]0 1 2 3 ... 127
-//[3]0 1 2 3 ... 127
-//[4]0 1 2 3 ... 127
-//[5]0 1 2 3 ... 127
-//[6]0 1 2 3 ... 127
-//[7]0 1 2 3 ... 127
-void delay_ms(unsigned int ms)   //24.000MHZ
+//OLED的显存
+//存放格式如下.
+//[0]0 1 2 3 ... 127	
+//[1]0 1 2 3 ... 127	
+//[2]0 1 2 3 ... 127	
+//[3]0 1 2 3 ... 127	
+//[4]0 1 2 3 ... 127	
+//[5]0 1 2 3 ... 127	
+//[6]0 1 2 3 ... 127	
+//[7]0 1 2 3 ... 127 			   
+void delay_ms(unsigned int ms)//@24.000MHz
 {
-	unsigned char i , j;
+	unsigned char i, j;
 	for(ms;ms>0;ms--)
 	{
 		i = 24;
 		j = 85;
 		do
 		{
-			while(--j);
-		} while(--i);
+			while (--j);
+		} while (--i);
 	}
 }
 
 #if OLED_MODE == 1
-//向SSD1106中写入一个字符
+//向SSD1106写入一个字节。
 //dat:要写入的数据/命令
-//cmd:数据命令标志 0：表示命令，1：表示数据
+//cmd:数据/命令标志 0,表示命令;1,表示数据;
 void OLED_WR_Byte(u8 dat,u8 cmd)
-{
+{	
 	//OLED_RD_Set();
 	if(cmd)
-		OLED_DC_Set();
-	else
-		OLED_DC_Clr();
-	OLED_WR_Clr();
+	  OLED_DC_Set();
+	else 
+	  OLED_DC_Clr();
+	OLED_WR_Clr();	 
 	OLED_DAT = dat;
-	OLED_WR_Set();
-	//OLED_DC_Set();
-}
+	OLED_WR_Set();	  
+	//OLED_DC_Set();	 
+} 	    	    
 #else
-//向SSD1306中写入一个字节
+//向SSD1306写入一个字节。
 //dat:要写入的数据/命令
-//cmd:数据命令标志 0：表示命令，1：表示数据
+//cmd:数据/命令标志 0,表示命令;1,表示数据;
 void OLED_WR_Byte(u8 dat,u8 cmd)
-{
-	u8 i;
+{	
+	u8 i;			  
 	if(cmd)
-		OLED_DC_Set();
-	else
-		OLED_DC_Clr();
+	  OLED_DC_Set();
+	else 
+	  OLED_DC_Clr();		  
 	OLED_CS_Clr();
 	for(i=0;i<8;i++)
-	{
+	{			  
 		OLED_SCLK_Clr();
 		if(dat&0x80)
 		{
 			OLED_SDIN_Set();
 		}
 		else
-			OLED_SDIN_Clr();
+		  OLED_SDIN_Clr();
 		OLED_SCLK_Set();
-		dat<<=1;
-	}
+		dat<<=1;   
+	}				 		  
 	OLED_CS_Set();
-	OLED_DC_Set();
-}
+	OLED_DC_Set();   	  
+} 
 #endif
-void OLED_Set_Pos(unsigned char x,unsigned char y)
+void OLED_Set_Pos(unsigned char x, unsigned char y) 
+{ 
+	OLED_WR_Byte(0xb0 + y, OLED_CMD);
+	OLED_WR_Byte(((x & 0xf0) >> 4) | 0x10, OLED_CMD);
+	OLED_WR_Byte((x & 0x0f), OLED_CMD); 
+}   
+//开启OLED显示    
+void OLED_Display_On(void)		//开启显示
 {
-	OLED_WR_Byte(0xb0 + y,OLED_CMD);
-	OLED_WR_Byte(((x & 0xf0) >> 4)| 0x10,OLED_CMD);
-	OLED_WR_Byte((x & 0x0f),OLED_CMD);
-	
+	OLED_WR_Byte(0X8D, OLED_CMD);  //SET DCDC命令
+	OLED_WR_Byte(0X14, OLED_CMD);  //DCDC ON
+	OLED_WR_Byte(0XAF, OLED_CMD);  //DISPLAY ON
 }
-//开启OLED显示
-void OLED_Display_On(void)
-{
-	OLED_WR_Byte(0x8D,OLED_CMD);    //SET DCDC 命令
-	OLED_WR_Byte(0x14,OLED_CMD);    //DCDC ON
-	OLED_WR_Byte(0xAF,OLED_CMD);    //Display on
-}
-//关闭OLED显示
-void OLED_Display_Off(void)
+//关闭OLED显示     
+void OLED_Display_Off(void)		//关闭显示
 {
 	OLED_WR_Byte(0X8D, OLED_CMD);  //SET DCDC命令
 	OLED_WR_Byte(0X10, OLED_CMD);  //DCDC OFF
 	OLED_WR_Byte(0XAE, OLED_CMD);  //DISPLAY OFF
-}
-void OLED_Set_Brightness(unsigned char brightness)   //设置对比度(亮度)
+}		
+void OLED_Set_Brightness(unsigned char brightness)	//设置对比度（亮度）
 {
 	OLED_WR_Byte(0x81, OLED_CMD);				//--set contrast control register
 	OLED_WR_Byte(brightness, OLED_CMD);	// Set SEG Output Current Brightness
 }
-
 void OLED_Horizental_Reverse(unsigned char reverse)	//水平翻转
 {
 	if(reverse)
@@ -108,7 +107,6 @@ void OLED_Vertical_Reverse(unsigned char reverse)		//垂直翻转
 	else
 		OLED_WR_Byte(0xC8, OLED_CMD);
 }
-
 void OLED_Inverse(unsigned char k)									//反色
 {
 	if(k)
@@ -142,7 +140,6 @@ void OLED_DrawBMP(unsigned char *buf)
 			OLED_WR_Byte(buf[n + j], OLED_DATA); 
 	}
 }
-
 //初始化SSD1315					    
 void OLED_Init()
 {
@@ -187,39 +184,7 @@ void OLED_Init()
 	OLED_WR_Byte(0xAF,OLED_CMD); /*display ON*/ 
 	OLED_Clear();
 	OLED_Set_Pos(0,0); 	
-}  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+} 
 
 
 

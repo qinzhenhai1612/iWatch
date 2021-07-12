@@ -1,4 +1,4 @@
-C51 COMPILER V9.52.0.0   LSM6DSM                                                           06/27/2021 08:52:18 PAGE 1   
+C51 COMPILER V9.52.0.0   LSM6DSM                                                           07/11/2021 16:30:38 PAGE 1   
 
 
 C51 COMPILER V9.52.0.0, COMPILATION OF MODULE LSM6DSM
@@ -62,7 +62,7 @@ line level    source
   51   1        p->gyr_z = (buf[5] << 8) | buf[4];// / 65.536;
   52   1        //acc
   53   1        p->acc_x = (buf[7] << 8) | buf[6];// / 8192.0;
-C51 COMPILER V9.52.0.0   LSM6DSM                                                           06/27/2021 08:52:18 PAGE 2   
+C51 COMPILER V9.52.0.0   LSM6DSM                                                           07/11/2021 16:30:38 PAGE 2   
 
   54   1        p->acc_y = (buf[9] << 8) | buf[8];// / 8192.0;
   55   1        p->acc_z = (buf[11] << 8) | buf[10];// / 8192.0;
@@ -126,7 +126,7 @@ line level    source
              - if = 0, SINGLE_TAP only)
  112   1        LSM6DSMRSetRegisterBits(MD1_CFG, 0x08, 1);    // (0x40)Single-tap interrupt driven to INT1 pin
  113   1                                                      // (0x08)Double-tap interrupt driven to INT1 pin
-C51 COMPILER V9.52.0.0   LSM6DSM                                                           06/27/2021 08:52:18 PAGE 3   
+C51 COMPILER V9.52.0.0   LSM6DSM                                                           07/11/2021 16:30:38 PAGE 3   
 
  114   1        //LSM6DSMRSetRegisterBits(MD2_CFG, 0x08, 1);  // (0x40)Single-tap interrupt driven to INT2 pin
  115   1                                                      // (0x08)Double-tap interrupt driven to INT2 pin
@@ -190,7 +190,7 @@ line level    source
  171          #define Ki    0.001f                         
  172          #define halfT 0.004f           
  173          float idata q0=1,q1=0,q2=0,q3=0;   
-C51 COMPILER V9.52.0.0   LSM6DSM                                                           06/27/2021 08:52:18 PAGE 4   
+C51 COMPILER V9.52.0.0   LSM6DSM                                                           07/11/2021 16:30:38 PAGE 4   
 
  174          float idata exInt=0,eyInt=0,ezInt=0; 
  175          void IMUupdate(struct lsm6dsm_data *p)
@@ -254,7 +254,7 @@ line level    source
 MODULE INFORMATION:   STATIC OVERLAYABLE
    CODE SIZE        =   2891    ----
    CONSTANT SIZE    =   ----    ----
-C51 COMPILER V9.52.0.0   LSM6DSM                                                           06/27/2021 08:52:18 PAGE 5   
+C51 COMPILER V9.52.0.0   LSM6DSM                                                           07/11/2021 16:30:38 PAGE 5   
 
    XDATA SIZE       =   ----      29
    PDATA SIZE       =   ----    ----

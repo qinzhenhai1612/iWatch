@@ -1,4 +1,4 @@
-C51 COMPILER V9.52.0.0   PCF8563                                                           06/27/2021 08:52:17 PAGE 1   
+C51 COMPILER V9.52.0.0   PCF8563                                                           07/11/2021 16:30:37 PAGE 1   
 
 
 C51 COMPILER V9.52.0.0, COMPILATION OF MODULE PCF8563
@@ -62,7 +62,7 @@ line level    source
   51   1        buf[0] &= 0x7f;
   52   1        t->second = (buf[0] >> 4) * 10 + (buf[0] & 0x0f);
   53   1        buf[1] &= 0x7f;
-C51 COMPILER V9.52.0.0   PCF8563                                                           06/27/2021 08:52:17 PAGE 2   
+C51 COMPILER V9.52.0.0   PCF8563                                                           07/11/2021 16:30:37 PAGE 2   
 
   54   1        t->minute = (buf[1] >> 4) * 10 + (buf[1] & 0x0f);
   55   1        buf[2] &= 0x3f;
@@ -126,7 +126,7 @@ line level    source
  112   1        unsigned char temp1 = 0;
  113   1        unsigned char temp2 = 0;
  114   1        unsigned char temp3 = 0;
-C51 COMPILER V9.52.0.0   PCF8563                                                           06/27/2021 08:52:17 PAGE 3   
+C51 COMPILER V9.52.0.0   PCF8563                                                           07/11/2021 16:30:37 PAGE 3   
 
  115   1        unsigned char temp4 = 0;
  116   1        temp1 = 0x80 | ((hour / 10) << 4) | (hour % 10);
@@ -190,7 +190,7 @@ line level    source
  174            * @retval 无
  175            */
  176          void PCF8563EnableTimer(unsigned char clock_fq, unsigned char value)
-C51 COMPILER V9.52.0.0   PCF8563                                                           06/27/2021 08:52:17 PAGE 4   
+C51 COMPILER V9.52.0.0   PCF8563                                                           07/11/2021 16:30:37 PAGE 4   
 
  177          {
  178   1        PCF8563SetRegisterBits(TIMER_CONTROL, 0x80, 0); //关闭定时器
@@ -254,7 +254,7 @@ line level    source
  236   1        //PCF8563DisableTimer();
  237   1        PCF8563EnableClockOuput(CLKOUT_1024_HZ, DISABLE_CLKOUT);
  238   1      }
-C51 COMPILER V9.52.0.0   PCF8563                                                           06/27/2021 08:52:17 PAGE 5   
+C51 COMPILER V9.52.0.0   PCF8563                                                           07/11/2021 16:30:37 PAGE 5   
 
  239            
  240            

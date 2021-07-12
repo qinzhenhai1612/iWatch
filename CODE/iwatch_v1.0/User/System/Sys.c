@@ -49,14 +49,14 @@ void PinInit()
 	P0M0 = 0x00;
 	P0M1 = 0x00;
 	//P10,P11 是串口2
-	//P12,P13为显示屏D/C,RST引脚，(V1.0:P12=RST,P14=D/C)
+	//P12,P13为显示屏D/C,RST引脚，(V1.0:P12=RST,P13=D/C)
 	//P14,P15为 IIC引脚，外部接入了上拉电阻，故设置为开漏          
 	//P16为蓝牙使能引脚，高电平时进入低功耗
-	//P17为充电使能引脚，高阻时使能充电（V1.0 ：需要飞线以支持.不做支持）
-	//P12 = 1; //显示屏的RST 拉高   
-	P1 = 0x00;   
-	P1M0 = 0x00;  //00000000b
-	P1M1 = 0x30;  //00110000b
+	//P17为充电使能引脚，高阻时使能充电（V1.0 :0R tie on GND，去掉了）
+	P12 = 1; //显示屏的RST 拉高   
+	P16 = 1;   
+	P1M0 = 0x30;  //00110000b
+	P1M1 = 0xb0;  //10110000b
 	//P20为LED驱动引脚，强推挽模式；（V1.0该引脚么有用，LED驱动引脚 为P35）
 	//P21,P22为外部拓展引脚； 
 	//P23为按键UP,默认高电平;
@@ -76,12 +76,12 @@ void PinInit()
 	P3M0 = 0x00;
 	P3M1 = 0x00;    
 	//P44,P43为显示屏E/RD,R/W引脚
-	//P40为3.3V使能输出引脚
-	P4 = 0x18; //00011000b
+	//P40为3.3V使能输出引脚(V1.0:没有使用)
+	P4 = 0x19; //00011000b
 	P4M0 = 0x00;
 	P4M1 = 0x00;
 	//P55为按键，默认高电平   DOWN
-	P5 = 0x30;    //0011 0000b
+	P5 = 0x20;    //0010 0000b
 	P5M0 = 0x00;
 	P5M1 = 0x00;
 }
@@ -220,21 +220,6 @@ void FeedWatchDog(void)
 {
 	WDT_CONTR |= 0x10;           //喂狗，清除看门狗计数器
 }
-
-//void EEPROMWriteConfiguration(struct sys_config *config)
-//{
-//	unsigned char i= 0 ;
-//	unsigned int temp = 0;
-//	for(i; i < CONFIG_SIZE -2 ; i++)      //对结构体中每一字节求和
-//		temp += ((unsigned char *)config)[i];
-//	config->check_sum = temp;
-//	EEPROM_SectorErase(EE_ADDRESS1);     //把求和结果放在结构体最后一个数字中
-//	EEPROM_write_n(EE_ADDRESS1,(unsigned char *)config,CONFIG_SIZE);
-//	
-//}
-
-
-
 void EEPROMWriteConfiguration(struct sys_config *config)
 {
 	unsigned char i = 0;
@@ -269,23 +254,23 @@ void LED(unsigned char k)
 }
    
 void SysInit(void)            
-{
+{      
 	PinInit();   //引脚初始化
 	UartInit();   //串口1初始化,使用定时器1
 	Uart2Init();  //串口2初始化，使用定时器3
 	Timer0Init();  //定时器0初始化，外部计数模式
 	Timer3Init();  //定时器3初始化，产生1ms溢出中断
 	InitConfig(); //中断初始化
-	//ADCInit();    //ADC初始化 ，采集电源电压
+	ADCInit();    //ADC初始化 ，采集电源电压
 	IIC_Init();   //硬件IIC初始化
 	EnableWatchDog();   //使能看门狗，程序卡死4s后自动复位
 	EEPROMReadConfiguration(&config);//读掉电保存数据
-	//BuzzerInit();  //蜂鸣器初始化，使用硬件PWM7
-	//EnableBuzzer(config.key_sound);
-	LED(ON);
-	//BatteryChargeEnable(1);  //允许电池充电
+//	BuzzerInit();  //蜂鸣器初始化，使用硬件PWM7
+//	EnableBuzzer(config.key_sound);
+	LED(OFF);
+//	BatteryChargeEnable(1);  //允许电池充电
 	Delay1ms(5);  
-	//Enable3V3Output(1);  //允许3.3V锂电池输出；
+//	Enable3V3Output(1);  //允许3.3V锂电池输出；
 	EA = 1;         //开全局中断
 }
 
@@ -298,8 +283,7 @@ void SysInit(void)
 
 
 
-
-
+   
 
 
 

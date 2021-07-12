@@ -1,0 +1,1 @@
+"..\User\System\Sys.c" LARGE OPTIMIZE (8,SPEED) BROWSE INCDIR(..\User\oled;..\User\rtc;..\User\System;..\User;..\User\bluetooth;..\User\radio;..\User\sensor) DEBUG OBJECTEXTEND PRINT(..\Listings\Sys.lst) TABS (2) OBJECT(..\Objects\Sys.obj)

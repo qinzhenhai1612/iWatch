@@ -221,14 +221,15 @@ void SensorInit(void)
 
 
 
-void  LED1_ON()
-{
-	P35 = 1;
-}  
-void  LED1_OFF()
-{
-  P35 = 0;
-}
+/****
+//void  LED1_ON()
+//{
+//	P35 = 1;
+//}  
+//void  LED1_OFF()
+//{
+//  P35 = 0;
+//}
 
 void BreathingLamp(void)
 {
@@ -269,43 +270,26 @@ void BreathingLamp(void)
 			}
 		}
 }
-
+********/
 
 void main()
 {	
 	
 	
-//	SysInit();						//系统初始化
-//	DisplayInit(&config);	//显示初始化     
+	SysInit();						//系统初始化
+	DisplayInit(&config);	//显示初始化     
 //	PCF8563Init();				//实时时钟初始化        
 //	SensorInit();					//传感器初始化
-//	ClearCache(main_cache);	//清空主显存
-	
-	//可以控制显示屏的相关控制信号，猜测是灯板的问题，待灯板回来后再重新贴装一个，测试
-	
-//  OLED_RST_Set();
-//	OLED_RD_Set();
-//	OLED_WR_Set();
-//	OLED_DC_Set();
-//	P1 = 0x0c;
-//	P4 = 0x18;
-	
-//	OLED_RST_Clr();
-//	OLED_WR_Clr();
-//	OLED_RD_Clr();                              
-//	OLED_DC_Clr();
-	P1 = 0x00;
-	P4 = 0x00;
-	
+	//ClearCache(main_cache);	//清空主显存
 	
 	
 	while(1)
 	
 	{
 		FeedWatchDog();			//喂看门狗
-		BreathingLamp();
+//		BreathingLamp();
  
-/*******
+//*******
  
 		if(func_num == WATCH)						//显示表盘
 		{
@@ -2482,7 +2466,7 @@ void main()
 				}
 			}    
 		}
-		*****/    	
+		//*****/    	
   }	          
 	
 }
