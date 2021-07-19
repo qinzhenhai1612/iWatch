@@ -34,13 +34,13 @@ void I2C_Stop()
 	I2CMSCR = 0x06;   //发送STOP指令
 	Wait();
 }
-void I2D_SendByte(unsigned char dat)
+void I2C_SendByte(unsigned char dat)
 {
 	I2CTXD = dat;        //写数据到数据缓冲区
 	I2CMSCR = 0x02;       //发送SEND命令
 	Wait();
 }
-unsigned char I2C_RecvHyte()
+unsigned char I2C_RecvByte()
 {
 	I2CMSCR = 0x04;
 	Wait();

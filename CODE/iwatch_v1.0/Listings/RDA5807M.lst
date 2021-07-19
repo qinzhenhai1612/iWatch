@@ -1,4 +1,4 @@
-C51 COMPILER V9.52.0.0   RDA5807M                                                          07/11/2021 16:30:37 PAGE 1   
+C51 COMPILER V9.52.0.0   RDA5807M                                                          07/19/2021 23:10:39 PAGE 1   
 
 
 C51 COMPILER V9.52.0.0, COMPILATION OF MODULE RDA5807M
@@ -62,7 +62,7 @@ line level    source
   51   1        P_SW2 &= ~0x10;
   52   1      }
   53          /**
-C51 COMPILER V9.52.0.0   RDA5807M                                                          07/11/2021 16:30:37 PAGE 2   
+C51 COMPILER V9.52.0.0   RDA5807M                                                          07/19/2021 23:10:39 PAGE 2   
 
   54            * @brief  RDA5807M读寄存器
   55            *         RDA5807M的的寄存器为16位，读寄存器时只能连续读出
@@ -126,7 +126,7 @@ line level    source
  112            *           DOWNWARD  向下搜台
  113            * @retval 无
  114            */
-C51 COMPILER V9.52.0.0   RDA5807M                                                          07/11/2021 16:30:37 PAGE 3   
+C51 COMPILER V9.52.0.0   RDA5807M                                                          07/19/2021 23:10:39 PAGE 3   
 
  115          float RDA5807MSEEK(unsigned char direction)
  116          {
@@ -190,7 +190,7 @@ line level    source
  174            */
  175          float RDA5807MGetCurrentFq(void)
  176          {
-C51 COMPILER V9.52.0.0   RDA5807M                                                          07/11/2021 16:30:37 PAGE 4   
+C51 COMPILER V9.52.0.0   RDA5807M                                                          07/19/2021 23:10:39 PAGE 4   
 
  177   1        RDA5807MReadRges();
  178   1        CHAN = REG0A & 0x03ff;

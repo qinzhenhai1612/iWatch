@@ -1,4 +1,4 @@
-C51 COMPILER V9.52.0.0   IIC                                                               07/11/2021 16:30:39 PAGE 1   
+C51 COMPILER V9.52.0.0   IIC                                                               07/19/2021 23:10:42 PAGE 1   
 
 
 C51 COMPILER V9.52.0.0, COMPILATION OF MODULE IIC
@@ -46,13 +46,13 @@ line level    source
   34   1        I2CMSCR = 0x06;   //发送STOP指令
   35   1        Wait();
   36   1      }
-  37          void I2D_SendByte(unsigned char dat)
+  37          void I2C_SendByte(unsigned char dat)
   38          {
   39   1        I2CTXD = dat;        //写数据到数据缓冲区
   40   1        I2CMSCR = 0x02;       //发送SEND命令
   41   1        Wait();
   42   1      }
-  43          unsigned char I2C_RecvHyte()
+  43          unsigned char I2C_RecvByte()
   44          {
   45   1        I2CMSCR = 0x04;
   46   1        Wait();
@@ -62,7 +62,7 @@ line level    source
   50          {
   51   1        I2CMSCR = 0x03;       //发送读ACK命令
   52   1        Wait();
-C51 COMPILER V9.52.0.0   IIC                                                               07/11/2021 16:30:39 PAGE 2   
+C51 COMPILER V9.52.0.0   IIC                                                               07/19/2021 23:10:42 PAGE 2   
 
   53   1      }
   54          void I2C_SendACK()
@@ -126,7 +126,7 @@ line level    source
  112   1        I2C_Stop();
  113   1        P_SW2 &= 0x7f;
  114   1      }
-C51 COMPILER V9.52.0.0   IIC                                                               07/11/2021 16:30:39 PAGE 3   
+C51 COMPILER V9.52.0.0   IIC                                                               07/19/2021 23:10:42 PAGE 3   
 
  115          void I2C_NoAddr_Read_MultiBytes(unsigned char DeviceAddr,unsigned char BytesNum,unsigned char *buf)
  116          {
@@ -175,9 +175,9 @@ line level    source
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    532    ----
+   CODE SIZE        =    415    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =   ----      21
+   XDATA SIZE       =   ----      12
    PDATA SIZE       =   ----    ----
    DATA SIZE        =      2    ----
    IDATA SIZE       =   ----    ----

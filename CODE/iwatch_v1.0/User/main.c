@@ -278,9 +278,9 @@ void main()
 	
 	SysInit();						//系统初始化
 	DisplayInit(&config);	//显示初始化     
-//	PCF8563Init();				//实时时钟初始化        
-//	SensorInit();					//传感器初始化
-	//ClearCache(main_cache);	//清空主显存
+	PCF8563Init();				//实时时钟初始化        
+	SensorInit();					//传感器初始化
+	ClearCache(main_cache);	//清空主显存
 	
 	
 	while(1)

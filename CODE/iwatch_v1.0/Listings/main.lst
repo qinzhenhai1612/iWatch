@@ -1,4 +1,4 @@
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 1   
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 1   
 
 
 C51 COMPILER V9.52.0.0, COMPILATION OF MODULE MAIN
@@ -62,7 +62,7 @@ line level    source
   51          unsigned char Trg = 0;      //按键触发值
   52          unsigned char Cont = 0;     //按键持续值
   53          /*************************显示缓存*******************************/
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 2   
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 2   
 
   54          extern unsigned char xdata main_cache[];
   55          extern unsigned char xdata sub_cache1[];
@@ -126,7 +126,7 @@ line level    source
  113   2            t_key_press = 0;
  114   2        }
  115   1        tick_1ms = 1;
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 3   
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 3   
 
  116   1        if(t_count % 8 == 0)
  117   1          tick_8ms = 1;
@@ -190,7 +190,7 @@ line level    source
  175   1        {Trg = 0;}
  176   1        else 
  177   1        {Trg = AWT;}
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 4   
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 4   
 
  178   1      }
  179          void INT3_Isr() interrupt 11          //按键2中断
@@ -254,7 +254,7 @@ line level    source
  237            for(i=0;i<num;i++)
  238              {
  239                for(j=0;j<num;j++)
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 5   
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 5   
 
  240                {
  241                  if(i>j)
@@ -297,9 +297,9 @@ line level    source
  278   1        
  279   1        SysInit();            //系统初始化
  280   1        DisplayInit(&config); //显示初始化     
- 281   1      //  PCF8563Init();        //实时时钟初始化        
- 282   1      //  SensorInit();         //传感器初始化
- 283   1        //ClearCache(main_cache); //清空主显存
+ 281   1        PCF8563Init();        //实时时钟初始化        
+ 282   1        SensorInit();         //传感器初始化
+ 283   1        ClearCache(main_cache); //清空主显存
  284   1        
  285   1        
  286   1        while(1)
@@ -318,7 +318,7 @@ line level    source
  299   3            {
  300   4              ON_OPEN = 0;
  301   4              if(func_index == FIRST_FUNC)
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 6   
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 6   
 
  302   4                ScreenPushAnimation(sub_cache1, DOWN);
  303   4              else if(func_index == LAST_FUNC)
@@ -382,7 +382,7 @@ line level    source
  361   6                  break;
  362   6                }
  363   5                case KEY2:
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 7   
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 7   
 
  364   5                {
  365   6                  func_index = FIRST_FUNC;
@@ -446,7 +446,7 @@ line level    source
  423   6                  goto case_AWT;
  424   6                  break;
  425   6                }
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 8   
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 8   
 
  426   5                case KEY2:
  427   5                {
@@ -510,7 +510,7 @@ line level    source
  485   6                  func_num = WATCH;
  486   6                  ON_CLOSE = 1;
  487   6                  break;
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 9   
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 9   
 
  488   6                }
  489   5              }
@@ -574,7 +574,7 @@ line level    source
  547   4              func_index = (enum function)((x + 16) / 32 + ((y + 16) / 32) * 4);
  548   4              func_num = func_index;
  549   4              ON_CLOSE = 1;
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 10  
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 10  
 
  550   4            }
  551   3            if(ON_CLOSE)
@@ -638,7 +638,7 @@ line level    source
  609   6                }
  610   5                case KEY2:
  611   5                {
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 11  
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 11  
 
  612   6                  if(TR0)
  613   6                  {
@@ -702,7 +702,7 @@ line level    source
  671   4              ON_OPEN = 0;
  672   4      //        PCF8563ReadTime(&RTC);
  673   4              ClearCache(sub_cache2);
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 12  
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 12  
 
  674   4              ShowString(0, 0, "Today:    History:", sub_cache2, FONT6X8, NO_INVERSED, 0);
  675   4              step = LSM6DSMGetCurrentStep();
@@ -766,7 +766,7 @@ line level    source
  733   4            }
  734   3            if(tick_20ms)
  735   3            {
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 13  
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 13  
 
  736   4              tick_20ms = 0;
  737   4              BME280GetSensorData(&BME280);         //读BME280测量数据并显示
@@ -830,7 +830,7 @@ line level    source
  795   4              ClearCache(main_cache);
  796   4              ShowString(80, 0, "volume", main_cache, FONT8X16, index == 0?INVERSED:NO_INVERSED, 0);
  797   4              sprintf(str2,"%.1fMHz", config.radio_channel);
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 14  
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 14  
 
  798   4              ShowString(40, 3, str2, main_cache, FONT8X16, NO_INVERSED, 0);
  799   4              if(searching_flag)
@@ -894,7 +894,7 @@ line level    source
  857   7                  }
  858   6                  else if(index == 2)
  859   6                  {
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 15  
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 15  
 
  860   7                    config.radio_channel -= 0.1;
  861   7                    if(config.radio_channel < 87)
@@ -958,7 +958,7 @@ line level    source
  919   5                BMPToCache(16, 2, 32, 16, NESW[n], sub_cache2, COVER);
  920   5                sprintf(str3, "%d  ", angle_from_north);
  921   5                ShowString(24, 4, str3, sub_cache2, FONT8X16, NO_INVERSED, COVER);
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 16  
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 16  
 
  922   5                BMPToCache(64, 0, 64, 64, COMPASS_ICON, sub_cache2, COVER);
  923   5                ScreenPushAnimation(sub_cache2, RIGHT);
@@ -1022,7 +1022,7 @@ line level    source
  981   3            {
  982   4              static int data_cnt = 0;
  983   4              if(ON_OPEN)
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 17  
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 17  
 
  984   4              {
  985   5                ON_OPEN = 0;
@@ -1086,7 +1086,7 @@ line level    source
 1043   3            unsigned char bluetooth_data[128] = "\0";
 1044   3            static bit bluetooth_init = 0;
 1045   3            static unsigned char y = 0;
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 18  
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 18  
 
 1046   3            static unsigned char connected = 0;
 1047   3            if(ON_OPEN)
@@ -1150,7 +1150,7 @@ line level    source
 1105   2          else if(func_num == SPIRIT_LEVEL) //水平仪  ok
 1106   2          {
 1107   3            int x, y;
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 19  
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 19  
 
 1108   3            unsigned char str[16];
 1109   3            if(ON_OPEN)
@@ -1214,7 +1214,7 @@ line level    source
 1167   4              switch(Trg)
 1168   4              {
 1169   5                case KEY1:
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 20  
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 20  
 
 1170   5                {
 1171   6                  ON_CLOSE = 1;
@@ -1278,7 +1278,7 @@ line level    source
 1229   3            if(Trg != 0)
 1230   3            {
 1231   4              switch(Trg)
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 21  
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 21  
 
 1232   4              {
 1233   5                case KEY1:
@@ -1342,7 +1342,7 @@ line level    source
 1291   6                  ON_OPEN = 0;
 1292   6                }
 1293   5                else if(ON_RETURN)
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 22  
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 22  
 
 1294   5                {
 1295   6                  ScreenPushAnimation(sub_cache2, RIGHT);
@@ -1406,7 +1406,7 @@ line level    source
 1353   5                ON_CLOSE = 0;
 1354   5                func_num = MENU;
 1355   5                ON_RETURN = 1;
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 23  
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 23  
 
 1356   5              }
 1357   4            }
@@ -1470,7 +1470,7 @@ line level    source
 1415   7                  }
 1416   6                  else if(set_index == 3)
 1417   6                  {
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 24  
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 24  
 
 1418   7                    sprintf(str, "%2d", (int)RTC.day);
 1419   7                    ShowString(80, 2, str, main_cache, FONT8X16, INVERSED, 0);
@@ -1534,7 +1534,7 @@ line level    source
 1477   9                        else if(set_index == 2)
 1478   9                        {
 1479  10                          if(++RTC.month == 13)
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 25  
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 25  
 
 1480  10                            RTC.month = 1;
 1481  10                        }
@@ -1598,7 +1598,7 @@ line level    source
 1539  10                            RTC.day = 31;
 1540  10                        }
 1541   9                      }
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 26  
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 26  
 
 1542   8                      else if(pointer == 2)
 1543   8                      {
@@ -1662,7 +1662,7 @@ line level    source
 1601   5                if(pointer == 0 && set_index != 0)
 1602   5                {
 1603   6                  if(set_index == 1)
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 27  
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 27  
 
 1604   6                  {
 1605   7                    sprintf(str, "%02d", (int)config.alarm_hour);
@@ -1726,7 +1726,7 @@ line level    source
 1663   9                      }
 1664   8                      else if(pointer == 1)
 1665   8                      {
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 28  
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 28  
 
 1666   9                        if(set_index == 1)
 1667   9                        {
@@ -1790,7 +1790,7 @@ line level    source
 1725   7                      set_index ++;
 1726   7                    else
 1727   7                    {
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 29  
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 29  
 
 1728   8                      if(pointer == 0)
 1729   8                      {
@@ -1854,7 +1854,7 @@ line level    source
 1786   4              {
 1787   5                ON_OPEN = 0;
 1788   5                temp = config.screen_brightness / 50;
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 30  
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 30  
 
 1789   5                ClearCache(sub_cache2);
 1790   5                ShowString(0, 0, "Set the contrast ratio of the screen.", sub_cache2, FONT6X8, NO_INVERSED, 0);
@@ -1918,7 +1918,7 @@ line level    source
 1848   5                ClearCache(sub_cache2);
 1849   5                ShowString(0, 0, "The time which screen stay-ON for without any operation,when set to 0,the screen wi
              -ll never turn off.", sub_cache2, FONT6X8, NO_INVERSED, 0);
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 31  
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 31  
 
 1850   5                sprintf(str, "%d", temp);
 1851   5                ShowString(56, 5, str, sub_cache2, FONT8X16, NO_INVERSED, 0);
@@ -1982,7 +1982,7 @@ line level    source
 1907   5                ShowString(56, 6, str, sub_cache2, FONT8X16, NO_INVERSED, 0);
 1908   5                ShowString(72, 7, "s", sub_cache2, FONT6X8, NO_INVERSED, 0);
 1909   5                ScreenPushAnimation(sub_cache2, LEFT);
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 32  
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 32  
 
 1910   5              }
 1911   4              if(tick_20ms)
@@ -2046,7 +2046,7 @@ line level    source
              -;
 1967   5              }
 1968   4              if(Trg != 0)
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 33  
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 33  
 
 1969   4              {
 1970   5                switch(Trg)
@@ -2110,7 +2110,7 @@ line level    source
 2026   7                      config.screen_direction = UPSIDEDOWN;
 2027   7                    ScreenSetDirection(config.screen_direction);
 2028   7                    break;
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 34  
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 34  
 
 2029   7                  } 
 2030   6                }
@@ -2174,7 +2174,7 @@ line level    source
 2086   3            {
 2087   4              MCUSoftReset();
 2088   4            }
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 35  
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 35  
 
 2089   3            else if(mode == 9)  //系统掉电
 2090   3            {
@@ -2238,7 +2238,7 @@ line level    source
 2148   4              tick_1ms = 0;
 2149   4              if(++t_cnt == (MAX_SNAKE_SPEED - snake_speed))
 2150   4              {
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 36  
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 36  
 
 2151   5                t_cnt = 0;
 2152   5                game_loop = 1;
@@ -2302,7 +2302,7 @@ line level    source
 2210   5                switch(snake_direction)
 2211   5                {
 2212   6                  case 0:   //右
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 37  
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 37  
 
 2213   6                    snake_head_x++;
 2214   6                    break;
@@ -2366,7 +2366,7 @@ line level    source
 2271   6                }
 2272   5                DrawDot(delicious_x,delicious_y);
 2273   5                DrawDot(delicious_x+1,delicious_y);
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 38  
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 38  
 
 2274   5                DrawDot(delicious_x-1,delicious_y);
 2275   5                DrawDot(delicious_x,delicious_y+1);
@@ -2430,7 +2430,7 @@ line level    source
 2333   4              LSM6DSMConfigGyr(GYR_POWER_DOWN, GYR_SCALE_500_DPS);
 2334   4              func_num = MENU;
 2335   4              ON_RETURN = 1;  
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 39  
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 39  
 
 2336   4            }
 2337   3          }
@@ -2494,7 +2494,7 @@ line level    source
 2394   4            }
 2395   3            Enable3V3Output(1);
 2396   3            Delay1ms(10);
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 40  
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 40  
 
 2397   3          }
 2398   2          if(alarm_flag)
@@ -2558,7 +2558,7 @@ line level    source
 2454   6                  LSM6DSMResetStepCounter();
 2455   6                }
 2456   5              }
-C51 COMPILER V9.52.0.0   MAIN                                                              07/11/2021 16:30:41 PAGE 41  
+C51 COMPILER V9.52.0.0   MAIN                                                              07/19/2021 23:10:49 PAGE 41  
 
 2457   4              if(powerdown_flag)
 2458   4              {
@@ -2582,7 +2582,7 @@ line level    source
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =  18200    ----
+   CODE SIZE        =  18215    ----
    CONSTANT SIZE    =   9022    ----
    XDATA SIZE       =    862     132
    PDATA SIZE       =   ----    ----
