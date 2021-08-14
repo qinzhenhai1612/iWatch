@@ -67,8 +67,4 @@ unsigned char PCF8563ReadIntSrc(void);
 void PCF8563EnableClockOuput(unsigned char clock_fq, unsigned char en);
 void PCF8563Init(void);
 
-
-
 #endif
-
-

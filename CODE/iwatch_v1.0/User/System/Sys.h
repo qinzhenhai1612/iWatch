@@ -8,9 +8,9 @@
 
 /*********************∫Í∂®“Â***********************/
 #define LED1 P35
-#define K1   P54
-#define K2   P23
-#define K3   P55
+#define K1   P27   // m
+#define K2   P23   // up  
+#define K3   P55   // down
 #define KEY1         0x01
 #define KEY2         0x02
 #define KEY3   	  	 0x04

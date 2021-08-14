@@ -28,8 +28,8 @@ void DisplayInit(struct sys_config *config)
 	* @param 	x：横坐标，y：纵坐标，width：图片的宽度，height：图片的高度，
 	*					buf1：BMP图的指针，buf2：显存的指针
 	*					k：选择覆盖在显存上还是重叠在显存上
-	*						COVER	覆盖
-	*						BLEND	叠加
+	*					0:	COVER	覆盖
+	*					1:	BLEND	叠加
 	* @retval 无
 	*/
 void BMPToCache(unsigned char x, unsigned char y, unsigned char width, unsigned char height, unsigned char *buf1, unsigned char *buf2, unsigned char k)
@@ -57,13 +57,13 @@ void BMPToCache(unsigned char x, unsigned char y, unsigned char width, unsigned 
 				buf2[num2 + j] |= buf1[num3 + j];
 		}
 	}
-	for(i = 0; i < num1; i++)
-	{
-		num2 = (i + y) * 128 + x;
-		num3 = i * width;
-		for(j = 0; j < width; j++)
-			buf2[num2 + j] = buf1[num3 + j];
-	}
+//	for(i = 0; i < num1; i++)
+//	{
+//		num2 = (i + y) * 128 + x;
+//		num3 = i * width;
+//		for(j = 0; j < width; j++)
+//			buf2[num2 + j] = buf1[num3 + j];
+//	}
 }
 /**
 	* @brief 	将指定显存清零

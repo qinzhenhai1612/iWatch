@@ -59,122 +59,179 @@ struct sys_config config;   //设置信息结构体
 struct pcf8563_time RTC;		//时间信息结构体
 struct bme280_data BME280;	//bme280数据结构体
 struct lsm6dsm_data LSM6DSM;//LSM6DSM 数据结构体
-struct cal_data magnet_cal_data;  //磁力计叫做数据结构体
+struct cal_data magnet_cal_data;  //磁力计校准数据结构体
 float battery_life;					//电池电量
 unsigned int  timer_cnt = 0;//定时器0溢出次数
+
+//****
+void  LED1_ON()
+{
+	P35 = 1;
+}  
+void  LED1_OFF()
+{
+  P35 = 0;
+}
+
+void BreathingLamp(void)
+{
+	unsigned int  i=0,  j=0,num=500;
+  for(i=0;i<num;i++)
+	  {
+			for(j=0;j<num;j++)
+			 {
+				  if(i>j)
+				{
+					LED1_ON();
+					Delay1us(1);
+				}
+				else
+				{
+					LED1_OFF();
+					Delay1us(1);
+				}	
+			}
+		}
+		FeedWatchDog();		
+		Delay1us(1);
+		for(i=0;i<num;i++)
+	  {
+			for(j=0;j<num;j++)
+			{
+				if(i>j)
+				{
+					LED1_OFF();
+					Delay1us(1);
+				}
+				else
+				{
+					LED1_ON();
+					Delay1us(1);
+					
+				}	
+			}
+		}
+}
+//********/
+
 
 
 void KeyScan(void)
 {
 	unsigned char dat = 0x00;
-	if(K1 == 0)
-		dat |= KEY1;
-	if(K2 == 0)
-		dat |= KEY2;
-	if(K3 ==0)
-		dat |= KEY3;
-	Trg = dat&(dat^Cont);
-	Cont = dat;
+	if(K1 == 0)              //m按键被按下
+		dat |= KEY1;					//被按下的键的键码是0x01
+	if(K2 == 0)							//按键up被按下
+		dat |= KEY2;					//被按下的键码是0x02
+	if(K3 ==0)							//按键down被按下
+		dat |= KEY3;					//被按下的键码是0x04
+	Trg = dat&(dat^Cont);		//按键触发值等于被按下的键码值  与上按键持续值          0x01 & 0x01 =0x01,说明按键的触发次数为1
+	Cont = dat;							//按下键码赋值给按键持续值
 }
 
-void TM3_Ist()  interrupt 19 using 1 		//	mcu定时器中断
+void TM3_Ist()  interrupt 19 using 1 		//	mcu TIM3 定时器定时1ms中断
 {
+	
 	static unsigned int t_count = 0;
-	static unsigned int t_key_press =0; 
+	static unsigned int t_key_press =0; 	
 	AUXINTIF &= ~T3IF; 										//清除中断标志位
+	//
 	if((K1 == 0) && (K2 == 0) && (K3 == 0))
 	{
 		while ((K1 == 0) ||(K2 == 0) ||(K3 == 0) ); //三个按键均抬起
-			MCUSoftReset();                    		  //软复位MCU
+		MCUSoftReset();                    		  //软复位MCU
 	}
 		if(t_count % 50 == 0)
 	{
 		KeyScan();
 		if(Trg)
 		{
-			Bee();
+			Bee();          
 			action = 1;
-			if(sleep_flag || powerdown_flag || alarm_flag)
-			{
-				Trg = 0;
-				if(alarm_flag)
-				{
-					alarm_flag = 0;
-					LED(OFF);
-				}
-			}
-		}
-		if(Cont)
-		{
-			if(++t_key_press > 10)	//判断是否长按
-				Trg = Cont;						//重复触发
-		}
-		else
-			t_key_press = 0;
+			LED1_OFF(); 
+//			if(sleep_flag || powerdown_flag || alarm_flag)
+//			{
+//				Trg = 0;				
+//				if(alarm_flag)
+//				{
+//					alarm_flag = 0;
+//					LED(OFF);
+//				}
+		}	
 	}
-	tick_1ms = 1;
-	if(t_count % 8 == 0)
-		tick_8ms = 1;
-	if(t_count % 20 == 0)
+//		if(Cont)
+//		{
+//			if(++t_key_press > 10)	//判断是否长按
+//				Trg = Cont;						//重复触发
+//		}
+//		else
+//			t_key_press = 0;
+//	}
+//	tick_1ms = 1;
+//	if(t_count % 8 == 0)
+//		tick_8ms = 1;
+//	if(t_count % 20 == 0)
 		tick_20ms = 1;
-	if(++t_count == 1000)
-	{
-		t_count = 0;
-		if(active_flag)
-		{
-			if(++inactive_time == config.t_inactive_max)
-			{
-				active_flag = 0;
-				inactive_time = 0;
-				sleep_flag = 1;
-			}
-		}
-		if(sleep_flag)
-		{
-			if(++sleep_time == config.t_sleep_max)
-			{
-				sleep_flag = 0;
-				sleep_time = 0;
-				powerdown_flag = 1;
-				ON_CLOSE = 1;
-			}
-		}
-	}
+//			
+//	if(++t_count == 1000)
+//	{
+//		t_count = 0;
+//		if(active_flag)
+//		{
+//			if(++inactive_time == config.t_inactive_max)
+//			{
+//				active_flag = 0;
+//				inactive_time = 0;
+//				sleep_flag = 1;
+//			}
+//		}
+//		if(sleep_flag)
+//		{
+//			if(++sleep_time == config.t_sleep_max)
+//			{
+//				sleep_flag = 0;
+//				sleep_time = 0;
+//				powerdown_flag = 1;
+//				ON_CLOSE = 1;
+//			}
+//		}
+//	}
 }
 
-//void INT0_Isr() interrupt 0						//PCF8563中断
-//{
-//	PCF8563_int_flag = 1;
-//}
+void INT0_Isr() interrupt 0						//PCF8563中断
+{
+	PCF8563_int_flag = 1;
+}
 void TM0_Isr() interrupt 1 using 1		//计数器0溢出中断
 {
 	timer_cnt++;
 }
-void INT1_Isr() interrupt 2 using 1		//双击中断
+void INT1_Isr() interrupt 2 using 1		//双击中断   是基于LSM6DSM                          
 {
-	action = 1;
-	alarm_flag = 0;
-	Bee();
-	if(sleep_flag || powerdown_flag || alarm_flag)
-		Trg = 0;
-	else
-		Trg = DOUBLE_TAP;
-	if(active_flag && func_num == WATCH)
-	{
-		action = 0;
-		active_flag = 0;
-		inactive_time = 0;
-		ScreenOnOff(OFF);
-		sleep_flag = 1;
-	}
+//	action = 1;
+//	alarm_flag = 0;
+//	Bee();
+//	if(sleep_flag || powerdown_flag || alarm_flag)
+//		Trg = 0;
+//	else
+//		Trg = DOUBLE_TAP;
+//	if(active_flag && func_num == WATCH)
+//	{
+//		action = 0;
+//		active_flag = 0;
+//		inactive_time = 0;
+//		ScreenOnOff(OFF);
+//		sleep_flag = 1;
+//		                  
+//	}
 }
 void INT2_Isr() interrupt 10 using 1	//抬腕唤醒中断
 {
-	action = 1;
-	if(sleep_flag || powerdown_flag)
-	{Trg = 0;}
-  else 
-  {Trg = AWT;}
+//	action = 1;
+//	if(sleep_flag || powerdown_flag)
+//	{Trg = 0;}
+//  else 
+//  {Trg = AWT;}
 }
 void INT3_Isr() interrupt 11					//按键2中断
 {
@@ -198,8 +255,8 @@ void SensorInit(void)
 	if(LSM6DSMInit() == 0)
 	{
 		y += ShowString(0, y, "LSM6DSM ERROR", main_cache, FONT8X16, NO_INVERSED, 1);
-		error_count++;
-	}
+		error_count++;       
+	} 
 	if(RDA5807MInit() == 0)
 	{
 		y += ShowString(0, y, "RDA5807M ERROR", main_cache, FONT8X16, NO_INVERSED, 1);
@@ -219,59 +276,6 @@ void SensorInit(void)
 
 
 
-
-
-/****
-//void  LED1_ON()
-//{
-//	P35 = 1;
-//}  
-//void  LED1_OFF()
-//{
-//  P35 = 0;
-//}
-
-void BreathingLamp(void)
-{
-	unsigned int  i=0,  j=0,num=500;
-  for(i=0;i<num;i++)
-	  {
-			for(j=0;j<num;j++)
-			{
-				if(i>j)
-				{
-					LED1_ON();
-					Delay1us(1);
-				}
-				else
-				{
-					LED1_OFF();
-					Delay1us(1);
-				}	
-			}
-		}
-		Delay1us(1);
-		for(i=0;i<num;i++)
-	  {
-			for(j=0;j<num;j++)
-			{
-				if(i>j)
-				{
-					LED1_OFF();
-					Delay1us(1);
-				}
-			
-				else
-				{
-					LED1_ON();
-					Delay1us(1);
-					
-				}	
-			}
-		}
-}
-********/
-
 void main()
 {	
 	
@@ -287,14 +291,17 @@ void main()
 	
 	{
 		FeedWatchDog();			//喂看门狗
-//		BreathingLamp();
+		//BreathingLamp();
+		
+		
+//*****
  
-//*******
- 
-		if(func_num == WATCH)						//显示表盘
+		//if(func_num == WATCH)						//显示表盘
+			if(1)
 		{
 			unsigned char x, n, m;
 			unsigned char str[16];
+		/******
 			if(ON_OPEN)			//进入该功能时执行的内容
 			{
 				ON_OPEN = 0;
@@ -304,56 +311,67 @@ void main()
 					ScreenPushAnimation(sub_cache1, UP);
 				func_index = WATCH;
 			}
+			
 			if(ON_RETURN)		//返回该功能时执行的内容
 			{
 				ON_RETURN = 0;
+				
 			}
+	    ******/
 			
 			if(tick_20ms)		//在功能里时，每20ms执行一次功能内容
 			{
 				tick_20ms = 0;
+				
 				//显示时间
 				PCF8563ReadTime(&RTC);
 				//printf("%d:%d:%d\n", (int)RTC.hour, (int)RTC.minute, (int)RTC.second);
 				DisplayTime(RTC.hour, RTC.minute, RTC.second);
+				
+				Delay1ms(1000);
+				
 				//显示小图标
-				ClearCacheArea(0, 0, 35, 8, main_cache);
-				x = 0;
-				BMPToCache(x, 0, 8, 8, BLUETOOTH_SMALL_ICON, main_cache, 0);
-				x += 9;
-				if(timer_on_flag)
-				{
-					BMPToCache(x, 0, 8, 8, TIMER_SMALL_ICON, main_cache, 0);
-					x += 9;
-				}
-				if(config.alarm_mode != ALARM_DISABLE)
-				{
-					BMPToCache(x, 0, 8, 8, CLOCK_SMALL_ICON, main_cache, 0);
-					x += 9;
-				}
-				if(radio_on_flag)
-					BMPToCache(x, 0, 8, 8, RADIO_SMALL_ICON, main_cache, 0);
-				//显示日期，星期
-				ClearCacheArea(0, 7, 128, 8, main_cache);
+//				ClearCacheArea(0, 0, 35, 8, main_cache);
+//				x = 0;
+//				BMPToCache(x, 0, 8, 8, BLUETOOTH_SMALL_ICON, main_cache, 0);
+//				x += 9;
+//				if(timer_on_flag)
+//				{
+//					BMPToCache(x, 0, 8, 8, TIMER_SMALL_ICON, main_cache, 0);
+//					x += 9;
+//				}
+//				if(config.alarm_mode != ALARM_DISABLE)
+//				{
+//					BMPToCache(x, 0, 8, 8, CLOCK_SMALL_ICON, main_cache, 0);
+//					x += 9;
+//				}
+//				if(radio_on_flag)
+//					BMPToCache(x, 0, 8, 8, RADIO_SMALL_ICON, main_cache, 0);
+				
+//				//显示日期，星期
+//				ClearCacheArea(0, 7, 128, 8, main_cache);
 				sprintf(str, "%d/%d/%d ", (int)RTC.year, (int)RTC.month, (int)RTC.day);
 				strcat(str, WEEKDAY_IN_STR[RTC.weekday - 1]);
-				ShowString(0, 7, str, main_cache, FONT6X8, NO_INVERSED, 0);
+				ShowString(0, 7, str, main_cache, FONT6X8, NO_INVERSED, 1);
 				//显示电量
-				battery_life = GetBatteryLife();
-				for(n = 0; n < 24; n++)
-					str[n] = BATTERY_LIFE_ICON[n];
-				m = 18 * battery_life;
-				for(n = 2; n < 2 + m; n++)
-					str[n] |= 0x3c;
-				BMPToCache(104, 0, 24, 8, str, main_cache, 0);
-				sprintf(str, "%3d%%", (int)(battery_life * 100));
-				ShowString(78, 0, str, main_cache, FONT6X8, NO_INVERSED, 1);
+//				battery_life = GetBatteryLife();
+//				for(n = 0; n < 24; n++)
+//					str[n] = BATTERY_LIFE_ICON[n];          
+//				m = 18 * battery_life;
+//				for(n = 2; n < 2 + m; n++)
+//					str[n] |= 0x3c;
+//				BMPToCache(104, 0, 24, 8, str, main_cache, 0);
+//				sprintf(str, "%3d%%", (int)(battery_life * 100));
+//				ShowString(78, 0, str, main_cache, FONT6X8, NO_INVERSED, 1);
 			}
-			
+		}	
+		
 			if(Trg != 0)		//在该功能下对按键事件的处理
 			{
+				
 				switch(Trg)
 				{
+					
 					case KEY1:
 					{
 						func_num = SUB_MENU;
@@ -387,16 +405,18 @@ void main()
 					}
 				}
 				Trg = 0;
+				
 			}
+		
 			if(ON_CLOSE)		//关闭该功能时执行的内容
 			{
+				
 				ON_CLOSE = 0;
 				SaveScreen();
 				ON_OPEN = 1;
 			}
-		}
 		else if(func_num == MENU)				//主菜单		ok
-     		{
+    {		
 			if(ON_OPEN)
 			{
 				ClearCache(sub_cache2);
@@ -414,6 +434,7 @@ void main()
 				BMPToCache(32, 0, 64, 64, FUNC_ICON[func_index], sub_cache2, COVER);
 				ScreenPushAnimation(sub_cache2, RIGHT);
 			}
+			
 			if(Trg != 0)
 			{
 				switch(Trg)
@@ -495,10 +516,10 @@ void main()
 				ON_OPEN = 1;
 			}
 		}
+	
 		else if(func_num == SUB_MENU)		//次菜单		ok
 		{
-			
-			char x, y;
+			char x, y;		
 			if(ON_OPEN)
 			{
 				ON_OPEN = 0;
@@ -557,6 +578,7 @@ void main()
 				ON_OPEN = 1;
 			}
 		}
+
 		else if(func_num == STOPWATCH)	//计时器		ok
 		{	
 			unsigned char t = 0, t_x = 0, t_y = 2;
@@ -669,7 +691,7 @@ void main()
 			if(ON_OPEN)
 			{
 				ON_OPEN = 0;
-//				PCF8563ReadTime(&RTC);
+				PCF8563ReadTime(&RTC);
 				ClearCache(sub_cache2);
 				ShowString(0, 0, "Today:    History:", sub_cache2, FONT6X8, NO_INVERSED, 0);
 				step = LSM6DSMGetCurrentStep();
@@ -1261,13 +1283,16 @@ void main()
 				ON_RETURN = 1;	
 			}
 		}
+		
 		else if(func_num == SETTING)			//设置		ok
 		{
+			
 			static char index = 0;		//菜单的索引(0~MENU_MAX_ROW-1)
 			static char pointer = 0;	//当前所选项在屏幕上的位置(0~3)
 			static char mode = -1;
 			unsigned char str[21];
 			unsigned char *cache;
+			
 			if(mode == -1)	//设置菜单界面
 			{
 				if(ON_OPEN | ON_RETURN)
@@ -1355,7 +1380,7 @@ void main()
 					ON_RETURN = 1;
 				}
 			}
-			else if(mode == 0)	//设置时间
+			else if(mode == 0)	//设置时间	
 			{
 				static char pointer = 0;
 				static char set_index = 0;
@@ -2100,11 +2125,13 @@ void main()
 				func_num = WATCH;
 			}
 		}
+		
 		else if(func_num == SNAKES)				//贪吃蛇  ok
 		{
 			#define PANEL_WIDTH		92
 			#define PANEL_HEIGHT	64
 			#define	MAX_SNAKE_SPEED	50
+			  	
 			unsigned char i = 0;
 			unsigned char str[6];
 			static unsigned char snake_direction = 0;//means sneak direction
@@ -2117,6 +2144,7 @@ void main()
 			static bit game_loop = 0;
 			static bit game_over = 0;
 			static bit game_pause = 0;
+		
 			if(ON_OPEN)
 			{
 				ON_OPEN = 0;
@@ -2335,82 +2363,87 @@ void main()
 				ON_RETURN = 1;	
 			}
 		}
+		
 		if(action)					//系统在不同状态下对动作的处理
 		{
 			action = 0;
 			if(active_flag)
+				LED1_ON();
 				inactive_time = 0;
-			else if(sleep_flag)
-			{
-				sleep_flag = 0;
-				sleep_time = 0;
-				active_flag = 1;
-				ScreenOnOff(ON);
-				screen_on_flag = 1;
-			}
-			else if(powerdown_flag)
-			{
-				powerdown_flag = 0;
-				active_flag = 1;
-				SystemPowerOn();
-				ScreenOnOff(ON);
-				screen_on_flag = 1;
-				ON_OPEN = 1;
-			}
-			else if(deep_powerdown_flag)
-			{
-				deep_powerdown_flag = 0;
-				active_flag = 1;
-				SystemPowerOn();
-				DisplayInit(&config);
-				screen_on_flag = 1;
-				SensorInit();
-				PW02SetMode(0);
-				PCF8563EnableTimer(TIMERCLK_1_60_HZ, 1);	//自动唤醒频率1min一次
-				ON_OPEN = 1;
-			}
-			autowake_cnt = 0;
+//			else if(sleep_flag)
+//			{
+//				sleep_flag = 0;
+//				sleep_time = 0;
+//				active_flag = 1;
+//				ScreenOnOff(ON);
+//				screen_on_flag = 1;
+//			}
+//			else if(powerdown_flag)
+//			{
+//				powerdown_flag = 0;
+//				active_flag = 1;
+//				SystemPowerOn();
+//				ScreenOnOff(ON);
+//				screen_on_flag = 1;
+//				ON_OPEN = 1;
+//			}
+//			else if(deep_powerdown_flag)
+//			{
+//				deep_powerdown_flag = 0;
+//				active_flag = 1;
+//				SystemPowerOn();
+//				DisplayInit(&config);
+//				screen_on_flag = 1;
+//				SensorInit();
+//				PW02SetMode(0);
+//				PCF8563EnableTimer(TIMERCLK_1_60_HZ, 1);	//自动唤醒频率1min一次
+//				ON_OPEN = 1;
+//			}
+//			autowake_cnt = 0;
 		}
 		if(sleep_flag)
 		{
+		
 			if(screen_on_flag)
 			{
-				ScreenOnOff(OFF);
+				ScreenOnOff(ON);
 				screen_on_flag = 0;
 			}
 		}   
-		if(powerdown_flag)		
-		{
-			if(ON_CLOSE == 0)
-			{
-				SystemPowerDown();
-			}
-		}
-		if(deep_powerdown_flag)
-		{
-			if(ON_CLOSE == 0)
-			{
-				SystemDeepPowerDown();
-			}
-			Enable3V3Output(1);
-			Delay1ms(10);
-		}
-		if(alarm_flag)
-		{
-			sleep_time = 0;			//闹铃被关掉前不会待机
-		}
-		if(timer_on_flag)
-		{
-			sleep_time = 0;			//计时器在工作时不会待机
-		}
+//		if(powerdown_flag)		
+//		{
+//			if(ON_CLOSE == 0)
+//			{
+//				SystemPowerDown();
+//			}
+//		}
+//		if(deep_powerdown_flag)
+//		{
+//			if(ON_CLOSE == 0)
+//			{
+//				SystemDeepPowerDown();
+//			}
+//			Enable3V3Output(1);
+//			Delay1ms(10);
+		
+//		if(alarm_flag)
+//		{
+//			sleep_time = 0;			//闹铃被关掉前不会待机
+//		}
+//		if(timer_on_flag)
+//		{
+//			sleep_time = 0;			//计时器在工作时不会待机
+//		}
 		if(PCF8563_int_flag)	//PCF8563产生了中断信号
 		{
 			unsigned char pcf8563_int_src;
 			PCF8563_int_flag = 0;
 			pcf8563_int_src = PCF8563ReadIntSrc();	//读PCF8563状态寄存器
 			PCF8563ReadTime(&RTC);
+			
 			if(pcf8563_int_src & ALARM_INT)				//如果是闹钟中断
 			{
+			         
 				PCF8563ClearAlarmFlag();	//清除闹钟中断标志位
 				action = 1;				//产生动作
 				alarm_flag = 1;		//置位闹钟标志位
@@ -2464,12 +2497,12 @@ void main()
 						deep_powerdown_flag = 1;
 					}
 				}
-			}    
+			} 
+		
 		}
-		//*****/    	
-  }	          
+			
+  }          
 	
-}
+    
 
-
-	
+}	
