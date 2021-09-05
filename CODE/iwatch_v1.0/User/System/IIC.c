@@ -97,6 +97,29 @@ unsigned char Single_ReadIIC(unsigned char SlaveAddress,unsigned char REG_Addres
 	P_SW2 &= 0x7f; 
 	return REG_data;
 }
+void I2C_Read_MultiBytes(unsigned char DeviceAddr, unsigned char address, unsigned char BytesNum, unsigned char *buf)
+{
+	unsigned char i;
+	P_SW2 |= 0x80;
+  I2C_Start();                  //起始信号
+  I2C_SendByte(DeviceAddr);   //发送设备地址+写信号
+	I2C_RecvACK();
+	I2C_SendByte(address);    //内部寄存器地址
+	I2C_RecvACK();
+	I2C_Start();
+	I2C_SendByte(DeviceAddr+1);
+	I2C_RecvACK();
+	for(i = 0; i < (BytesNum - 1); i++)
+	{
+		buf[i] = I2C_RecvByte();
+		I2C_SendACK();	
+	}
+	buf[i] = I2C_RecvByte();
+	I2C_SendNAK();
+	I2C_Stop();                   //发送停止信号
+	P_SW2 &= 0x7f;
+}
+
 void I2C_NoAddr_Write_MultiBytes(unsigned char DeviceAddr,unsigned char BytesNum,unsigned char *buf)
 {
 	unsigned char i = 0;
@@ -129,28 +152,28 @@ void I2C_NoAddr_Read_MultiBytes(unsigned char DeviceAddr,unsigned char BytesNum,
 	I2C_SendNAK();
 	I2C_Stop();
 	P_SW2 &=  0x7f;                    //关闭对外设存储取悦的寻址
-}
-void I2C_Read_MultiBytes(unsigned char DeviceAddr,unsigned char address,unsigned char BytesNum,unsigned char *buf)
-{
-	unsigned char i;
-	P_SW2 |= 0x80;                     //开启对外部存储器的寻址
-	I2C_Start();
-	I2C_SendByte(DeviceAddr);          //发送设备地址+写信号
-	I2C_RecvACK();
-	I2C_SendByte(address);             // 内部寄存器地址
-	I2C_RecvACK();
-	I2C_Start();
-	I2C_SendByte(DeviceAddr+1);
-	for(i = 0; i < (BytesNum-1); i++)
-	{
-		buf[i] = I2C_RecvByte();
-		I2C_SendACK();
-	}
-	buf[i] = I2C_RecvByte();
-	I2C_SendNAK();
-	I2C_Stop();
-	P_SW2 &= 0x7f;          
-}
+}       
+//void I2C_Read_MultiBytes(unsigned char DeviceAddr,unsigned char address,unsigned char BytesNum,unsigned char *buf)
+//{
+//	unsigned char i;
+//	P_SW2 |= 0x80;                     //开启对外部存储器的寻址
+//	I2C_Start();
+//	I2C_SendByte(DeviceAddr);          //发送设备地址+写信号
+//	I2C_RecvACK();
+//	I2C_SendByte(address);             // 内部寄存器地址
+//	I2C_RecvACK();
+//	I2C_Start();
+//	I2C_SendByte(DeviceAddr+1);
+//	for(i = 0; i < (BytesNum-1); i++)
+//	{
+//		buf[i] = I2C_RecvByte();
+//		I2C_SendACK();
+//	}
+//	buf[i] = I2C_RecvByte();
+//	I2C_SendNAK();
+//	I2C_Stop();
+//	P_SW2 &= 0x7f;          
+//}
                
 
 

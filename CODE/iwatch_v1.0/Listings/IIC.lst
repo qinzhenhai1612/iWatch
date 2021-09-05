@@ -1,4 +1,4 @@
-C51 COMPILER V9.52.0.0   IIC                                                               08/02/2021 23:10:22 PAGE 1   
+C51 COMPILER V9.52.0.0   IIC                                                               08/26/2021 06:14:24 PAGE 1   
 
 
 C51 COMPILER V9.52.0.0, COMPILATION OF MODULE IIC
@@ -62,7 +62,7 @@ line level    source
   50          {
   51   1        I2CMSCR = 0x03;       //发送读ACK命令
   52   1        Wait();
-C51 COMPILER V9.52.0.0   IIC                                                               08/02/2021 23:10:22 PAGE 2   
+C51 COMPILER V9.52.0.0   IIC                                                               08/26/2021 06:14:24 PAGE 2   
 
   53   1      }
   54          void I2C_SendACK()
@@ -111,71 +111,97 @@ line level    source
   97   1        P_SW2 &= 0x7f; 
   98   1        return REG_data;
   99   1      }
- 100          void I2C_NoAddr_Write_MultiBytes(unsigned char DeviceAddr,unsigned char BytesNum,unsigned char *buf)
+ 100          void I2C_Read_MultiBytes(unsigned char DeviceAddr, unsigned char address, unsigned char BytesNum, unsigned
+             - char *buf)
  101          {
- 102   1        unsigned char i = 0;
+ 102   1        unsigned char i;
  103   1        P_SW2 |= 0x80;
- 104   1        I2C_Start();
- 105   1        I2C_SendByte(DeviceAddr);
+ 104   1        I2C_Start();                  //起始信号
+ 105   1        I2C_SendByte(DeviceAddr);   //发送设备地址+写信号
  106   1        I2C_RecvACK();
- 107   1        for(i = 0; i < BytesNum; i++)
- 108   1        {
- 109   2          I2C_SendByte(buf[i]);
- 110   2          I2C_RecvACK();
- 111   2        }
- 112   1        I2C_Stop();
- 113   1        P_SW2 &= 0x7f;
- 114   1      }
-C51 COMPILER V9.52.0.0   IIC                                                               08/02/2021 23:10:22 PAGE 3   
+ 107   1        I2C_SendByte(address);    //内部寄存器地址
+ 108   1        I2C_RecvACK();
+ 109   1        I2C_Start();
+ 110   1        I2C_SendByte(DeviceAddr+1);
+ 111   1        I2C_RecvACK();
+ 112   1        for(i = 0; i < (BytesNum - 1); i++)
+ 113   1        {
+C51 COMPILER V9.52.0.0   IIC                                                               08/26/2021 06:14:24 PAGE 3   
 
- 115          void I2C_NoAddr_Read_MultiBytes(unsigned char DeviceAddr,unsigned char BytesNum,unsigned char *buf)
- 116          {
- 117   1        unsigned char i;
- 118   1        P_SW2 |= 0x80;
- 119   1        I2C_Start();
- 120   1        I2C_SendByte(DeviceAddr+1);        //发送设备地址+读信号
- 121   1        I2C_RecvACK();
- 122   1        for(i = 0; i < (BytesNum - 1); i++ )
- 123   1        {
- 124   2          buf[i] = I2C_RecvByte();
- 125   2          I2C_SendNAK();
- 126   2          I2C_Stop();
- 127   2        }
- 128   1        buf[i] = I2C_RecvByte();
- 129   1        I2C_SendNAK();
- 130   1        I2C_Stop();
- 131   1        P_SW2 &=  0x7f;                    //关闭对外设存储取悦的寻址
- 132   1      }
- 133          void I2C_Read_MultiBytes(unsigned char DeviceAddr,unsigned char address,unsigned char BytesNum,unsigned ch
-             -ar *buf)
- 134          {
- 135   1        unsigned char i;
- 136   1        P_SW2 |= 0x80;                     //开启对外部存储器的寻址
- 137   1        I2C_Start();
- 138   1        I2C_SendByte(DeviceAddr);          //发送设备地址+写信号
- 139   1        I2C_RecvACK();
- 140   1        I2C_SendByte(address);             // 内部寄存器地址
- 141   1        I2C_RecvACK();
+ 114   2          buf[i] = I2C_RecvByte();
+ 115   2          I2C_SendACK();  
+ 116   2        }
+ 117   1        buf[i] = I2C_RecvByte();
+ 118   1        I2C_SendNAK();
+ 119   1        I2C_Stop();                   //发送停止信号
+ 120   1        P_SW2 &= 0x7f;
+ 121   1      }
+ 122          
+ 123          void I2C_NoAddr_Write_MultiBytes(unsigned char DeviceAddr,unsigned char BytesNum,unsigned char *buf)
+ 124          {
+ 125   1        unsigned char i = 0;
+ 126   1        P_SW2 |= 0x80;
+ 127   1        I2C_Start();
+ 128   1        I2C_SendByte(DeviceAddr);
+ 129   1        I2C_RecvACK();
+ 130   1        for(i = 0; i < BytesNum; i++)
+ 131   1        {
+ 132   2          I2C_SendByte(buf[i]);
+ 133   2          I2C_RecvACK();
+ 134   2        }
+ 135   1        I2C_Stop();
+ 136   1        P_SW2 &= 0x7f;
+ 137   1      }
+ 138          void I2C_NoAddr_Read_MultiBytes(unsigned char DeviceAddr,unsigned char BytesNum,unsigned char *buf)
+ 139          {
+ 140   1        unsigned char i;
+ 141   1        P_SW2 |= 0x80;
  142   1        I2C_Start();
- 143   1        I2C_SendByte(DeviceAddr+1);
- 144   1        for(i = 0; i < (BytesNum-1); i++)
- 145   1        {
- 146   2          buf[i] = I2C_RecvByte();
- 147   2          I2C_SendACK();
- 148   2        }
- 149   1        buf[i] = I2C_RecvByte();
- 150   1        I2C_SendNAK();
- 151   1        I2C_Stop();
- 152   1        P_SW2 &= 0x7f;          
- 153   1      }
- 154                         
- 155          
- 156          
- 157          
+ 143   1        I2C_SendByte(DeviceAddr+1);        //发送设备地址+读信号
+ 144   1        I2C_RecvACK();
+ 145   1        for(i = 0; i < (BytesNum - 1); i++ )
+ 146   1        {
+ 147   2          buf[i] = I2C_RecvByte();
+ 148   2          I2C_SendNAK();
+ 149   2          I2C_Stop();
+ 150   2        }
+ 151   1        buf[i] = I2C_RecvByte();
+ 152   1        I2C_SendNAK();
+ 153   1        I2C_Stop();
+ 154   1        P_SW2 &=  0x7f;                    //关闭对外设存储取悦的寻址
+ 155   1      }       
+ 156          //void I2C_Read_MultiBytes(unsigned char DeviceAddr,unsigned char address,unsigned char BytesNum,unsigned 
+             -char *buf)
+ 157          //{
+ 158          //  unsigned char i;
+ 159          //  P_SW2 |= 0x80;                     //开启对外部存储器的寻址
+ 160          //  I2C_Start();
+ 161          //  I2C_SendByte(DeviceAddr);          //发送设备地址+写信号
+ 162          //  I2C_RecvACK();
+ 163          //  I2C_SendByte(address);             // 内部寄存器地址
+ 164          //  I2C_RecvACK();
+ 165          //  I2C_Start();
+ 166          //  I2C_SendByte(DeviceAddr+1);
+ 167          //  for(i = 0; i < (BytesNum-1); i++)
+ 168          //  {
+ 169          //    buf[i] = I2C_RecvByte();
+ 170          //    I2C_SendACK();
+ 171          //  }
+ 172          //  buf[i] = I2C_RecvByte();
+ 173          //  I2C_SendNAK();
+ 174          //  I2C_Stop();
+C51 COMPILER V9.52.0.0   IIC                                                               08/26/2021 06:14:24 PAGE 4   
+
+ 175          //  P_SW2 &= 0x7f;          
+ 176          //}
+ 177                         
+ 178          
+ 179          
+ 180          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    415    ----
+   CODE SIZE        =    418    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----      12
    PDATA SIZE       =   ----    ----

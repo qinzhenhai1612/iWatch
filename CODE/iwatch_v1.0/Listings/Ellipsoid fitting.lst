@@ -1,4 +1,4 @@
-C51 COMPILER V9.52.0.0   ELLIPSOID_FITTING                                                 08/02/2021 23:10:21 PAGE 1   
+C51 COMPILER V9.52.0.0   ELLIPSOID_FITTING                                                 08/22/2021 16:01:03 PAGE 1   
 
 
 C51 COMPILER V9.52.0.0, COMPILATION OF MODULE ELLIPSOID_FITTING
@@ -62,7 +62,7 @@ line level    source
   51   2        }
   52   1        //b向量是m_matrix[row][6]
   53   1      }
-C51 COMPILER V9.52.0.0   ELLIPSOID_FITTING                                                 08/02/2021 23:10:21 PAGE 2   
+C51 COMPILER V9.52.0.0   ELLIPSOID_FITTING                                                 08/22/2021 16:01:03 PAGE 2   
 
   54          
   55          //化简系数矩阵，把除以N带上
@@ -126,7 +126,7 @@ line level    source
  113          void MoveBiggestElement_to_Top(int k)
  114          {
  115   1        int row = 0, column = 0;
-C51 COMPILER V9.52.0.0   ELLIPSOID_FITTING                                                 08/02/2021 23:10:21 PAGE 3   
+C51 COMPILER V9.52.0.0   ELLIPSOID_FITTING                                                 08/22/2021 16:01:03 PAGE 3   
 
  116   1        for (row = k + 1; row < MATRIX_SIZE; row++)
  117   1        {
@@ -190,7 +190,7 @@ line level    source
  174   1      }
  175          
  176          //整个椭球校准的过程
-C51 COMPILER V9.52.0.0   ELLIPSOID_FITTING                                                 08/02/2021 23:10:21 PAGE 4   
+C51 COMPILER V9.52.0.0   ELLIPSOID_FITTING                                                 08/22/2021 16:01:03 PAGE 4   
 
  177          unsigned char Ellipsoid_fitting_Process(struct cal_data *dat)
  178          {
@@ -254,7 +254,7 @@ line level    source
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
    CODE SIZE        =   2975    ----
-C51 COMPILER V9.52.0.0   ELLIPSOID_FITTING                                                 08/02/2021 23:10:21 PAGE 5   
+C51 COMPILER V9.52.0.0   ELLIPSOID_FITTING                                                 08/22/2021 16:01:03 PAGE 5   
 
    CONSTANT SIZE    =     32    ----
    XDATA SIZE       =    218     151

@@ -1,0 +1,1 @@
+"..\User\System\IIC.c" LARGE OPTIMIZE (8,SPEED) BROWSE INCDIR(..\User\oled;..\User\rtc;..\User\System;..\User;..\User\bluetooth;..\User\radio;..\User\sensor) DEBUG OBJECTEXTEND PRINT(..\Listings\IIC.lst) TABS (2) OBJECT(..\Objects\IIC.obj)

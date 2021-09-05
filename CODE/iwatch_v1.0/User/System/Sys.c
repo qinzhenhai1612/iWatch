@@ -13,7 +13,7 @@ const struct sys_config default_config = {
 	//默认显示参数
 	10,						//自动息屏时间
 	5,						//自动待机时间
-	50,						//屏幕亮度（0~255）
+	10,						//屏幕亮度（0~255）
 	NO_INVERSED,	//屏幕是否反色
 	NORMAL,				//屏幕的显示方向
 	OFF,					//关闭按键音
@@ -250,7 +250,7 @@ unsigned char EEPROMReadConfiguration(struct sys_config *config)
 
 void LED(unsigned char k)
 {
-	LED1 = k^0x01;     //不懂为什么要异或，而不是取反
+	LED1 = k^0x01;     //异或的目的是与原来的状态相反
 }
    
 void SysInit(void)            
@@ -265,12 +265,12 @@ void SysInit(void)
 	IIC_Init();   //硬件IIC初始化
 	EnableWatchDog();   //使能看门狗，程序卡死4s后自动复位
 	EEPROMReadConfiguration(&config);//读掉电保存数据
-//	BuzzerInit();  //蜂鸣器初始化，使用硬件PWM7
-//	EnableBuzzer(config.key_sound);
+	BuzzerInit();  //蜂鸣器初始化，使用硬件PWM7
+	EnableBuzzer(config.key_sound);
 	LED(OFF);
-//	BatteryChargeEnable(1);  //允许电池充电
+	BatteryChargeEnable(1);  //允许电池充电
 	Delay1ms(5);  
-//	Enable3V3Output(1);  //允许3.3V锂电池输出；
+	Enable3V3Output(1);  //允许3.3V锂电池输出；
 	EA = 1;         //开全局中断
 }
 

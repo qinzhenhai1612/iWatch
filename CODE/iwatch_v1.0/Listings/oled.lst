@@ -1,4 +1,4 @@
-C51 COMPILER V9.52.0.0   OLED                                                              08/02/2021 23:10:20 PAGE 1   
+C51 COMPILER V9.52.0.0   OLED                                                              08/22/2021 16:01:02 PAGE 1   
 
 
 C51 COMPILER V9.52.0.0, COMPILATION OF MODULE OLED
@@ -62,7 +62,7 @@ line level    source
                   OLED_DC_Set();
                 else 
                   OLED_DC_Clr();      
-C51 COMPILER V9.52.0.0   OLED                                                              08/02/2021 23:10:20 PAGE 2   
+C51 COMPILER V9.52.0.0   OLED                                                              08/22/2021 16:01:02 PAGE 2   
 
                 OLED_CS_Clr();
                 for(i=0;i<8;i++)
@@ -126,7 +126,7 @@ line level    source
  113   1          OLED_WR_Byte(0xA7, OLED_CMD);
  114   1        else
  115   1          OLED_WR_Byte(0xA6, OLED_CMD);
-C51 COMPILER V9.52.0.0   OLED                                                              08/02/2021 23:10:20 PAGE 3   
+C51 COMPILER V9.52.0.0   OLED                                                              08/22/2021 16:01:02 PAGE 3   
 
  116   1      }
  117          void OLED_Clear(void)   //ÇåÆÁ
@@ -190,7 +190,7 @@ line level    source
  175   1        OLED_WR_Byte(0x14,OLED_CMD);//--set(0x10) disable
  176   1        OLED_WR_Byte(0xA4,OLED_CMD);// Disable Entire Display On (0xa4/0xa5)
  177   1        OLED_WR_Byte(0xA6,OLED_CMD);// Disable Inverse Display On (0xa6/a7) 
-C51 COMPILER V9.52.0.0   OLED                                                              08/02/2021 23:10:20 PAGE 4   
+C51 COMPILER V9.52.0.0   OLED                                                              08/22/2021 16:01:02 PAGE 4   
 
  178   1        OLED_WR_Byte(0xAF,OLED_CMD);//--turn on oled panel
  179   1        //OLED_WR_Byte(0xD6,OLED_CMD);

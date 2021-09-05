@@ -1,0 +1,1 @@
+"..\User\sensor\LSM6DSM.c" LARGE OPTIMIZE (8,SPEED) BROWSE INCDIR(..\User\oled;..\User\rtc;..\User\System;..\User;..\User\bluetooth;..\User\radio;..\User\sensor) DEBUG OBJECTEXTEND PRINT(..\Listings\LSM6DSM.lst) TABS (2) OBJECT(..\Objects\LSM6DSM.obj)

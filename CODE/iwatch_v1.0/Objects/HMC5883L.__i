@@ -1,0 +1,1 @@
+"..\User\sensor\HMC5883L.c" LARGE OPTIMIZE (8,SPEED) BROWSE INCDIR(..\User\oled;..\User\rtc;..\User\System;..\User;..\User\bluetooth;..\User\radio;..\User\sensor) DEBUG OBJECTEXTEND PRINT(..\Listings\HMC5883L.lst) TABS (2) OBJECT(..\Objects\HMC5883L.obj)

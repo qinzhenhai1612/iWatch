@@ -1,0 +1,1 @@
+"..\User\Rtc\PCF8563.c" LARGE OPTIMIZE (8,SPEED) BROWSE INCDIR(..\User\oled;..\User\rtc;..\User\System;..\User;..\User\bluetooth;..\User\radio;..\User\sensor) DEBUG OBJECTEXTEND PRINT(..\Listings\PCF8563.lst) TABS (2) OBJECT(..\Objects\PCF8563.obj)
