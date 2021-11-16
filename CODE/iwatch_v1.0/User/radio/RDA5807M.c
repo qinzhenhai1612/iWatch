@@ -47,7 +47,7 @@ void RDA5807MWriteRegs(void)
 	reg[6] = REG05 >> 8;
 	reg[7] = REG05;
 	P_SW2 |= 0x10;
-	I2C_NoAddr_Write_MultiBytes(RDA5807M_IIC_ADDR, 8, reg);
+//	I2C_NoAddr_Write_MultiBytes(RDA5807M_IIC_ADDR, 8, reg);
 	P_SW2 &= ~0x10;
 }
 /**
@@ -62,7 +62,7 @@ void RDA5807MReadRges(void)
 {
 	unsigned char read_buf[4];
 	P_SW2 |= 0x10;
-	I2C_NoAddr_Read_MultiBytes(RDA5807M_IIC_ADDR, 4, read_buf);
+//	I2C_NoAddr_Read_MultiBytes(RDA5807M_IIC_ADDR, 4, read_buf);
 	P_SW2 &= ~0x10;
 	REG0A = read_buf[0];
 	REG0A <<= 8;

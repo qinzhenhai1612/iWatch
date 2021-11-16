@@ -1,4 +1,4 @@
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 1   
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 1   
 
 
 C51 COMPILER V9.52.0.0, COMPILATION OF MODULE MAIN
@@ -62,7 +62,7 @@ line level    source
   51          /*************************按键相关变量*********************/
   52          unsigned char Trg = 0;      //按键触发值
   53          unsigned char Cont = 0;     //按键持续值
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 2   
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 2   
 
   54          /*************************显示缓存*******************************/
   55          extern unsigned char xdata main_cache[];
@@ -126,7 +126,7 @@ line level    source
  113                }
  114              }
  115          }
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 3   
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 3   
 
  116          ********/
  117          void KeyScan(void)
@@ -168,7 +168,7 @@ line level    source
  152   4              if(alarm_flag)
  153   4              {
  154   5                alarm_flag = 0;
- 155   5                LED(OFF);
+ 155   5      //          LED(OFF);
  156   5              }
  157   4          } 
  158   3        }
@@ -190,7 +190,7 @@ line level    source
  174   2          t_count = 0;
  175   2          if(active_flag)
  176   2          {
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 4   
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 4   
 
  177   3            if(++inactive_time == config.t_inactive_max)
  178   3            {
@@ -254,7 +254,7 @@ line level    source
  236          void SensorInit(void)
  237          {
  238   1        unsigned char y = 0;
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 5   
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 5   
 
  239   1        unsigned int time_out = 700;
  240   1        unsigned char error_count = 0;
@@ -318,7 +318,7 @@ line level    source
  298   4            }   
  299   3            if(tick_20ms)   //在功能里时，每20ms执行一次功能内容
  300   3            {
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 6   
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 6   
 
  301   4              tick_20ms = 0;
  302   4              //显示时间
@@ -349,15 +349,15 @@ line level    source
  327   4              strcat(str, WEEKDAY_IN_STR[RTC.weekday - 1]);
  328   4              ShowString(0, 7, str, main_cache, FONT6X8, NO_INVERSED, 1);
  329   4              //显示电量
- 330   4      //        battery_life = GetBatteryLife();
- 331   4      //        for(n = 0; n < 24; n++)
- 332   4      //          str[n] = BATTERY_LIFE_ICON[n];          
- 333   4      //        m = 18 * battery_life;
- 334   4      //        for(n = 2; n < 2 + m; n++)
- 335   4      //          str[n] |= 0x3c;
- 336   4      //        BMPToCache(104, 0, 24, 8, str, main_cache, 0);
- 337   4      //        sprintf(str, "%3d%%", (int)(battery_life * 100));
- 338   4      //        ShowString(78, 0, str, main_cache, FONT6X8, NO_INVERSED, 1);
+ 330   4              battery_life = GetBatteryLife();
+ 331   4              for(n = 0; n < 24; n++)
+ 332   4                str[n] = BATTERY_LIFE_ICON[n];          
+ 333   4              m = 18 * battery_life;
+ 334   4              for(n = 2; n < 2 + m; n++)
+ 335   4                str[n] |= 0x3c;
+ 336   4              BMPToCache(104, 0, 24, 8, str, main_cache, 0);
+ 337   4              sprintf(str, "%3d%%", (int)(battery_life * 100));
+ 338   4              ShowString(78, 0, str, main_cache, FONT6X8, NO_INVERSED, 1);
  339   4            }
  340   3          } 
  341   2            if(Trg != 0)    //在该功能下对按键事件的处理
@@ -382,7 +382,7 @@ line level    source
  360   5                  func_index = LAST_FUNC;
  361   5                  func_num = MENU;
  362   5                  ON_CLOSE = 1;
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 7   
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 7   
 
  363   5                  break;
  364   5                }
@@ -446,7 +446,7 @@ line level    source
  422   7                    ON_CLOSE = 1;
  423   7                  }
  424   6                  else
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 8   
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 8   
 
  425   6                  {
  426   7                    ClearCache(sub_cache2);
@@ -510,7 +510,7 @@ line level    source
  484   4              ON_CLOSE = 0;
  485   4              ON_OPEN = 1;
  486   4            }
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 9   
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 9   
 
  487   3          }
  488   2        
@@ -574,7 +574,7 @@ line level    source
  546   4              LSM6DSMConfigGyr(GYR_POWER_DOWN, GYR_SCALE_500_DPS);
  547   4              ON_OPEN = 1;
  548   4            }
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 10  
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 10  
 
  549   3          }
  550   2      
@@ -638,7 +638,7 @@ line level    source
  608   7                  }
  609   6                  else
  610   6                  {
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 11  
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 11  
 
  611   7                    PCF8563EnableClockOuput(CLKOUT_1024_HZ, ENABLE_CLKOUT);
  612   7                    TR0 = 1;
@@ -702,7 +702,7 @@ line level    source
  670   4            }
  671   3            if(tick_20ms)
  672   3            {
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 12  
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 12  
 
  673   4              tick_20ms = 0;
  674   4              step = LSM6DSMGetCurrentStep();
@@ -766,7 +766,7 @@ line level    source
  732   4              sprintf(str1, "%.1f", BME280.temperature);
  733   4              ShowString(48, 0, str1, main_cache, FONT8X16, NO_INVERSED, 0);
  734   4              BMPToCache(84, 0, 16, 16, CELSIUS_ICON, main_cache, 0);
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 13  
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 13  
 
  735   4              sprintf(str1, "%.1f %%", BME280.humidity);
  736   4              ShowString(48, 2, str1, main_cache, FONT8X16, NO_INVERSED, 0);
@@ -830,7 +830,7 @@ line level    source
  794   5                  ShowString(28, 5, "searching...", main_cache, FONT6X8, NO_INVERSED, 0);
  795   5                else
  796   5                {
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 14  
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 14  
 
  797   6                  config.radio_channel = temp;
  798   6                  searching_flag = 0;
@@ -894,7 +894,7 @@ line level    source
  856   6                  break;
  857   6                }
  858   5                case DOUBLE_TAP:
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 15  
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 15  
 
  859   5                {
  860   6                  if(++index == 4)
@@ -958,7 +958,7 @@ line level    source
  918   5                tick_8ms = 0; 
  919   5                LSM6DSMReadGYRAndACC(&LSM6DSM);
  920   5                IMUupdate(&LSM6DSM);
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 16  
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 16  
 
  921   5              }
  922   4              if(tick_20ms)
@@ -1022,7 +1022,7 @@ line level    source
  980   5                sprintf(str3, "y:%d", magnet_data[1]);
  981   5                ShowString(0, 2, str3, sub_cache2, FONT8X16, NO_INVERSED, 0);
  982   5                sprintf(str3, "z:%d", magnet_data[2]);
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 17  
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 17  
 
  983   5                ShowString(0, 4, str3, sub_cache2, FONT8X16, NO_INVERSED, 0);
  984   5                ScreenPushAnimation(sub_cache2, LEFT);
@@ -1086,7 +1086,7 @@ line level    source
 1042   4              ScreenPushAnimation(sub_cache2, LEFT);
 1043   4              if(bluetooth_init == 0)
 1044   4              {
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 18  
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 18  
 
 1045   5                while(PW02Init() == 0);       //蓝牙初始化
 1046   5                bluetooth_init = 1;
@@ -1150,7 +1150,7 @@ line level    source
 1104   4              sprintf(str, "x:%.1f  ", LSM6DSM.AngleX);
 1105   4              ShowString(0, 0, str, sub_cache2, FONT6X8, NO_INVERSED, 0);
 1106   4              sprintf(str, "y:%.1f  ", LSM6DSM.AngleY);
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 19  
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 19  
 
 1107   4              ShowString(0, 1, str, sub_cache2, FONT6X8, NO_INVERSED, 0);
 1108   4              sprintf(str, "z:%.1f  ", LSM6DSM.AngleZ);
@@ -1214,7 +1214,7 @@ line level    source
 1166   5                {
 1167   6                  config.cal_anglex = LSM6DSM.AngleX;
 1168   6                  config.cal_angley = LSM6DSM.AngleY;
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 20  
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 20  
 
 1169   6                  break;
 1170   6                } 
@@ -1237,74 +1237,74 @@ line level    source
 1187   4              ON_RETURN = 1;
 1188   4            }
 1189   3          }
-1190   2        
+1190   2        /*
 1191   2          else if(func_num == FLASH_LIGHT)  //手电筒  ok
 1192   2          {
-1193   3            static char flash_mode = 0;
-1194   3            static char flash_t_cnt = 0;
-1195   3            static bit k = 0;
-1196   3            if(ON_OPEN)
-1197   3            {
-1198   4              ON_OPEN = 0;
-1199   4              ClearCache(sub_cache2);
-1200   4              ShowString(28, 3, "Torch ON", sub_cache2, FONT8X16, NO_INVERSED, 0);
-1201   4              ScreenPushAnimation(sub_cache2, LEFT);
-1202   4              ScreenSetInverse(INVERSED);
-1203   4              ScreenSetBrightness(255);
-1204   4              LED(ON);
-1205   4            }
-1206   3            if(tick_20ms)
-1207   3            {
-1208   4              tick_20ms = 0;
-1209   4              inactive_time = 0;
-1210   4              if(flash_mode)
-1211   4              {
-1212   5                if(flash_t_cnt++ == 5)
-1213   5                {
-1214   6                  flash_t_cnt = 0;
-1215   6                  k = ~k;
-1216   6                  LED(k);
-1217   6                }
-1218   5              }
-1219   4            }
-1220   3            if(Trg != 0)
-1221   3            {
-1222   4              switch(Trg)
-1223   4              {
-1224   5                case KEY1:
-1225   5                {
-1226   6                  ON_CLOSE = 1;
-1227   6                  break;
-1228   6                }
-1229   5                case KEY2:
-1230   5                {
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 21  
+1193   2            static char flash_mode = 0;
+1194   2            static char flash_t_cnt = 0;
+1195   2            static bit k = 0;
+1196   2            if(ON_OPEN)
+1197   2            {
+1198   2              ON_OPEN = 0;
+1199   2              ClearCache(sub_cache2);
+1200   2              ShowString(28, 3, "Torch ON", sub_cache2, FONT8X16, NO_INVERSED, 0);
+1201   2              ScreenPushAnimation(sub_cache2, LEFT);
+1202   2              ScreenSetInverse(INVERSED);
+1203   2              ScreenSetBrightness(255);
+1204   2      //        LED(ON);
+1205   2            }
+1206   2            if(tick_20ms)
+1207   2            {
+1208   2              tick_20ms = 0;
+1209   2              inactive_time = 0;
+1210   2              if(flash_mode)
+1211   2              {
+1212   2                if(flash_t_cnt++ == 5)
+1213   2                {
+1214   2                  flash_t_cnt = 0;
+1215   2                  k = ~k;
+1216   2      //            LED(k);
+1217   2                }
+1218   2              }
+1219   2            }
+1220   2            if(Trg != 0)
+1221   2            {
+1222   2              switch(Trg)
+1223   2              {
+1224   2                case KEY1:
+1225   2                {
+1226   2                  ON_CLOSE = 1;
+1227   2                  break;
+1228   2                }
+1229   2                case KEY2:
+1230   2                {
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 21  
 
-1231   6                  if(flash_mode == 0)
-1232   6                    flash_mode = 1;
-1233   6                  else
-1234   6                  {
-1235   7                    flash_mode = 0;
-1236   7                    LED(ON);
-1237   7                  }
-1238   6                  break;
-1239   6                }
-1240   5              }
-1241   4              Trg = 0;
-1242   4            }
-1243   3            if(ON_CLOSE)
-1244   3            {
-1245   4              ON_CLOSE = 0;
-1246   4              ScreenSetBrightness(config.screen_brightness);
-1247   4              ScreenSetInverse(config.screen_inverse);
-1248   4              LED(OFF);
-1249   4              flash_mode = 0;
-1250   4              flash_t_cnt = 0;
-1251   4              func_num = MENU;
-1252   4              ON_RETURN = 1;  
-1253   4            }
-1254   3          }
-1255   2          
+1231   2                  if(flash_mode == 0)
+1232   2                    flash_mode = 1;
+1233   2                  else
+1234   2                  {
+1235   2                    flash_mode = 0;
+1236   2      //              LED(ON);
+1237   2                  }
+1238   2                  break;
+1239   2                }
+1240   2              }
+1241   2              Trg = 0;
+1242   2            }
+1243   2            if(ON_CLOSE)
+1244   2            {
+1245   2              ON_CLOSE = 0;
+1246   2              ScreenSetBrightness(config.screen_brightness);
+1247   2              ScreenSetInverse(config.screen_inverse);
+1248   2      //        LED(OFF);
+1249   2              flash_mode = 0;
+1250   2              flash_t_cnt = 0;
+1251   2              func_num = MENU;
+1252   2              ON_RETURN = 1;  
+1253   2            }
+1254   2          }
+1255   2          */
 1256   2          else if(func_num == SETTING)      //设置    ok
 1257   2          {
 1258   3            
@@ -1342,7 +1342,7 @@ line level    source
 1290   6                  ON_RETURN = 0;
 1291   6                } 
 1292   5              }
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 22  
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 22  
 
 1293   4              if(Trg != 0)
 1294   4              {
@@ -1406,7 +1406,7 @@ line level    source
 1352   3            else if(mode == 0)  //设置时间  
 1353   3            {
 1354   4              static char pointer = 0;
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 23  
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 23  
 
 1355   4              static char set_index = 0;
 1356   4              if(ON_OPEN)
@@ -1470,7 +1470,7 @@ line level    source
 1414   7                  }
 1415   6                }
 1416   5                if(pointer == 2 && set_index != 0)
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 24  
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 24  
 
 1417   5                  ShowString(16, 4, WEEKDAY_IN_STR[RTC.weekday - 1], main_cache, FONT8X16, INVERSED, 1);
 1418   5                else
@@ -1534,7 +1534,7 @@ line level    source
 1476   9                        else if(set_index == 3)
 1477   9                        {
 1478  10                          if(++RTC.day == 32)
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 25  
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 25  
 
 1479  10                            RTC.day = 1;
 1480  10                        }
@@ -1598,7 +1598,7 @@ line level    source
 1538   9                        if(set_index == 1)
 1539   9                          if(--RTC.weekday == 0)
 1540   9                            RTC.weekday = 7;
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 26  
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 26  
 
 1541   9                      }
 1542   8                    }
@@ -1662,7 +1662,7 @@ line level    source
 1600   7                    ShowString(16, 1, str, main_cache, FONT8X16, INVERSED, 0);
 1601   7                  }
 1602   6                  else if(set_index == 2)
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 27  
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 27  
 
 1603   6                  {
 1604   7                    sprintf(str, "%02d", (int)config.alarm_min);
@@ -1726,7 +1726,7 @@ line level    source
 1662  10                          if(++config.alarm_mode == ALARM_MODE_NUM)
 1663  10                            config.alarm_mode = 0;
 1664  10                        }
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 28  
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 28  
 
 1665   9                        else if(set_index == 2)
 1666   9                        {
@@ -1790,7 +1790,7 @@ line level    source
 1724   9                        if(++set_index == 3)
 1725   9                          set_index = 1;
 1726   9                      }
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 29  
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 29  
 
 1727   8                      else if(pointer == 1)
 1728   8                      {
@@ -1854,7 +1854,7 @@ line level    source
 1785   5                sprintf(str, "%d", (int)temp);
 1786   5                ShowString(56, 3, str, sub_cache2, FONT8X16, NO_INVERSED, 0);
 1787   5                ScreenPushAnimation(sub_cache2, LEFT);
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 30  
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 30  
 
 1788   5              }
 1789   4              if(tick_20ms)
@@ -1918,7 +1918,7 @@ line level    source
 1846   5                ShowString(72, 6, "s", sub_cache2, FONT6X8, NO_INVERSED, 0);
 1847   5                ScreenPushAnimation(sub_cache2, LEFT);
 1848   5              }
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 31  
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 31  
 
 1849   4              if(tick_20ms)
 1850   4              {
@@ -1982,7 +1982,7 @@ line level    source
 1906   4              {
 1907   5                tick_20ms = 0;
 1908   5                ClearCache(main_cache);
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 32  
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 32  
 
 1909   5                ShowString(0, 0, "The time which mcu stay active for before without any operation power-down,when set
              - to 0,the mcu will never power down.", main_cache, FONT6X8, NO_INVERSED, 0);
@@ -2046,7 +2046,7 @@ line level    source
 1965   5                {
 1966   6                  case KEY1:
 1967   6                  {
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 33  
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 33  
 
 1968   7                    ON_CLOSE = 1;
 1969   7                    break;
@@ -2110,7 +2110,7 @@ line level    source
 2025   5                Trg = 0;
 2026   5              }
 2027   4              if(ON_CLOSE)
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 34  
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 34  
 
 2028   4              {
 2029   5                ON_CLOSE = 0;
@@ -2174,7 +2174,7 @@ line level    source
 2085   4              ON_OPEN = 0;
 2086   4              active_flag = 0;
 2087   4              action = 0;
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 35  
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 35  
 
 2088   4              sleep_flag = 0;
 2089   4              powerdown_flag = 0;
@@ -2238,7 +2238,7 @@ line level    source
 2147   4              {
 2148   5                t_cnt = 0;
 2149   5                game_loop = 1;
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 36  
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 36  
 
 2150   5              }
 2151   4            }
@@ -2302,7 +2302,7 @@ line level    source
 2209   6                  case 0:   //右
 2210   6                    snake_head_x++;
 2211   6                    break;
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 37  
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 37  
 
 2212   6                  case 1:   //下
 2213   6                    snake_head_y++;
@@ -2366,7 +2366,7 @@ line level    source
 2270   5                DrawDot(delicious_x+1,delicious_y);
 2271   5                DrawDot(delicious_x-1,delicious_y);
 2272   5                DrawDot(delicious_x,delicious_y+1);
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 38  
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 38  
 
 2273   5                DrawDot(delicious_x+1,delicious_y+1);
 2274   5                DrawDot(delicious_x-1,delicious_y+1);
@@ -2430,7 +2430,7 @@ line level    source
 2332   4              ON_RETURN = 1;  
 2333   4            }
 2334   3          }
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 39  
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 39  
 
 2335   2          
 2336   2          if(action)          //系统在不同状态下对动作的处理
@@ -2494,7 +2494,7 @@ line level    source
 2393   4            }
 2394   3            Enable3V3Output(1);
 2395   3            Delay1ms(10);
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 40  
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 40  
 
 2396   3          
 2397   3          if(alarm_flag)
@@ -2558,7 +2558,7 @@ line level    source
              -());
 2454   7                  EEPROMWriteConfiguration(&config);
 2455   7                  LSM6DSMResetStepCounter();
-C51 COMPILER V9.52.0.0   MAIN                                                              08/26/2021 06:14:25 PAGE 41  
+C51 COMPILER V9.52.0.0   MAIN                                                              09/13/2021 23:37:22 PAGE 41  
 
 2456   7                }
 2457   6              }
@@ -2579,19 +2579,17 @@ line level    source
 2472   3        }          
 2473   2        }
 2474   1      } 
-*** WARNING C280 IN LINE 284 OF ..\User\main.c: 'n': unreferenced local variable
-*** WARNING C280 IN LINE 284 OF ..\User\main.c: 'm': unreferenced local variable
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =  17961    ----
-   CONSTANT SIZE    =   9016    ----
-   XDATA SIZE       =    862     132
+   CODE SIZE        =  18012    ----
+   CONSTANT SIZE    =   9013    ----
+   XDATA SIZE       =    860     132
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----
-   BIT SIZE         =     22    ----
+   BIT SIZE         =     21    ----
 END OF MODULE INFORMATION.
 
 
-C51 COMPILATION COMPLETE.  3 WARNING(S),  0 ERROR(S)
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)

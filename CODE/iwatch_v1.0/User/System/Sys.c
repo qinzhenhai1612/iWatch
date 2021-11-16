@@ -16,7 +16,7 @@ const struct sys_config default_config = {
 	10,						//屏幕亮度（0~255）
 	NO_INVERSED,	//屏幕是否反色
 	NORMAL,				//屏幕的显示方向
-	OFF,					//关闭按键音
+	OFF,   					//关闭按键音
 	//默认闹钟参数
 	8,							//小时
 	30,							//分钟

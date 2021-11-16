@@ -152,7 +152,7 @@ void TM3_Ist()  interrupt 19 using 1 		//	mcu TIM3 定时器定时1ms中断
 				if(alarm_flag)
 				{
 					alarm_flag = 0;
-					LED(OFF);
+//					LED(OFF);
 				}
 		}	
 	}
@@ -327,15 +327,15 @@ void main()
 				strcat(str, WEEKDAY_IN_STR[RTC.weekday - 1]);
 				ShowString(0, 7, str, main_cache, FONT6X8, NO_INVERSED, 1);
 				//显示电量
-//				battery_life = GetBatteryLife();
-//				for(n = 0; n < 24; n++)
-//					str[n] = BATTERY_LIFE_ICON[n];          
-//				m = 18 * battery_life;
-//				for(n = 2; n < 2 + m; n++)
-//					str[n] |= 0x3c;
-//				BMPToCache(104, 0, 24, 8, str, main_cache, 0);
-//				sprintf(str, "%3d%%", (int)(battery_life * 100));
-//				ShowString(78, 0, str, main_cache, FONT6X8, NO_INVERSED, 1);
+				battery_life = GetBatteryLife();
+				for(n = 0; n < 24; n++)
+					str[n] = BATTERY_LIFE_ICON[n];          
+				m = 18 * battery_life;
+				for(n = 2; n < 2 + m; n++)
+					str[n] |= 0x3c;
+				BMPToCache(104, 0, 24, 8, str, main_cache, 0);
+				sprintf(str, "%3d%%", (int)(battery_life * 100));
+				ShowString(78, 0, str, main_cache, FONT6X8, NO_INVERSED, 1);
 			}
 		}	
 			if(Trg != 0)		//在该功能下对按键事件的处理
@@ -1187,7 +1187,7 @@ void main()
 				ON_RETURN = 1;
 			}
 		}
-	
+	/*
 		else if(func_num == FLASH_LIGHT)	//手电筒	ok
 		{
 			static char flash_mode = 0;
@@ -1201,7 +1201,7 @@ void main()
 				ScreenPushAnimation(sub_cache2, LEFT);
 				ScreenSetInverse(INVERSED);
 				ScreenSetBrightness(255);
-				LED(ON);
+//				LED(ON);
 			}
 			if(tick_20ms)
  			{
@@ -1213,7 +1213,7 @@ void main()
 					{
 						flash_t_cnt = 0;
 						k = ~k;
-						LED(k);
+//						LED(k);
 					}
 				}
 			}
@@ -1233,7 +1233,7 @@ void main()
 						else
 						{
 							flash_mode = 0;
-							LED(ON);
+//							LED(ON);
 						}
 						break;
 					}
@@ -1245,14 +1245,14 @@ void main()
 				ON_CLOSE = 0;
 				ScreenSetBrightness(config.screen_brightness);
 				ScreenSetInverse(config.screen_inverse);
-				LED(OFF);
+//				LED(OFF);
 				flash_mode = 0;
 				flash_t_cnt = 0;
 				func_num = MENU;
 				ON_RETURN = 1;	
 			}
 		}
-		
+		*/
 		else if(func_num == SETTING)			//设置		ok
 		{
 			
